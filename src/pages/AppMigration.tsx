@@ -10,10 +10,14 @@ import { Activity } from 'lucide-react';
 import AppList from '../components/AppList';
 import MigrationModal from '../components/MigrationModal';
 import CleanupModal from '../components/CleanupModal';
+import BatchMigrationReport from '../components/BatchMigrationReport';
 import TargetPickerDialog from '../components/TargetPickerDialog';
 import Toast, { useToast } from '../components/Toast';
 import { logger } from '../utils/logger';
 import { formatMigrationFailureMessage, parseTargetExistsConflict } from '../utils/migrationMessages';
+import {
+  buildBatchConfirmMessage, getAvailableSpaceForPath, type BatchReportItem,
+} from '../utils/batchMigration';
 import { TabNavigationContext } from '../App';
 import { useDangerousPathCheck, WarningInfo } from '../hooks/useDangerousPathCheck';
 import WarningConfirmDialog from '../components/WarningConfirmDialog';
@@ -250,6 +254,12 @@ export default function AppMigration({ visible }: { visible: boolean }) {
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const [batchMigrating, setBatchMigrating] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
+  // 批量结果清单：只要出现失败或跳过就用它替代 toast 汇总
+  const [batchReport, setBatchReport] = useState<{ items: BatchReportItem[]; cancelled: boolean }>({
+    items: [],
+    cancelled: false,
+  });
+  const [batchReportVisible, setBatchReportVisible] = useState(false);
   // 批量迁移取消标志，用 ref 避免异步循环中闭包捕获过期 state
   const batchCancelledRef = useRef(false);
   // 批量模式下进程锁弹窗的 Promise resolve 函数
@@ -1386,6 +1396,14 @@ export default function AppMigration({ visible }: { visible: boolean }) {
 
   // 关闭迁移弹窗（成功/错误后的关闭）
   function handleCloseMigrationModal() {
+    // 进程占用等待期间点 X / Esc / 遮罩都会走到这里，而 handleBatchMigrate 此刻正停在
+    // 一个「等用户决定继续还是跳过」的 Promise 上。不先把它解开，批量就会永远挂住：
+    // batchMigrating 再也回不去，工具栏一直显示「停止」而那个取消标志无人检查。
+    // 这里按「停止」处理，与用户主动关闭弹窗的意图一致。
+    if (batchProcessLockResolveRef.current) {
+      batchProcessLockResolveRef.current(false);
+      batchProcessLockResolveRef.current = null;
+    }
     setMigrationModalOpen(false);
     setMigratingApp(null);
     setMigrationStep('idle');
@@ -1458,18 +1476,38 @@ export default function AppMigration({ visible }: { visible: boolean }) {
   async function handleBatchMigrate() {
     if (selectedKeys.size === 0) return;
 
+    // 已迁移与 Viap 自身都没有可迁移目标，这里再兜一层（复选框本来就不给勾选）
+    const selectedApps = apps.filter((app) =>
+      selectedKeys.has(app.registry_path || app.install_location)
+      && !isViapSelf(app)
+      && !migratedPaths.some((p) => p.toLowerCase() === app.install_location.toLowerCase())
+    );
+    if (selectedApps.length === 0) return;
+
     const defaultTarget = loadAppDefaultTarget();
     const targetDir = await resolveMigrationTarget(defaultTarget, '批量迁移', setActiveTab, showTargetPicker);
     if (!targetDir) return;
 
-    const selectedApps = apps.filter((a) =>
-      selectedKeys.has(a.registry_path || a.install_location)
+    // 确认框要回答三个问题：搬多少、目标盘够不够、哪些会因为高风险被跳过。
+    // estimated_size 单位是 KB，扫描不到大小的应用为 0，此时汇总会退化成「体积未知」。
+    const totalBytes = selectedApps.reduce(
+      (sum, app) => sum + Math.max(app.estimated_size, 0) * 1024,
+      0,
     );
-    if (selectedApps.length === 0) return;
+    const riskyCount = selectedApps.filter((app) => checkWarning(app.install_location) !== null).length;
+    const freeBytes = await getAvailableSpaceForPath(targetDir);
 
     const confirmed = await confirm(
-      `即将批量迁移 ${selectedApps.length} 个应用到：\n${targetDir}\n\n每个应用将迁移到独立的子目录中，是否继续？`,
-      { title: '确认批量迁移', kind: 'warning', okLabel: '开始迁移', cancelLabel: '取消' }
+      buildBatchConfirmMessage({
+        noun: '个应用',
+        count: selectedApps.length,
+        targetDir,
+        totalBytes,
+        freeBytes,
+        riskyCount,
+        extraWarning: '每个应用会迁移到目标目录下独立的子目录中。',
+      }),
+      { title: '确认批量迁移', kind: 'warning', okLabel: '开始迁移', cancelLabel: '取消' },
     );
     if (!confirmed) return;
 
@@ -1505,9 +1543,9 @@ export default function AppMigration({ visible }: { visible: boolean }) {
       logger.error('注册批量进度监听失败:', error);
     }
 
-    let successCount = 0;
-    let failCount = 0;
-    const failedApps: string[] = [];
+    // 逐项结果：批量里不能用 toast 报错（toast 只有单槽位，连续失败会互相覆盖），
+    // 统一收集后结束时弹一个结果清单
+    const results: BatchReportItem[] = [];
 
     for (let i = 0; i < selectedApps.length; i++) {
       if (batchCancelledRef.current) break;
@@ -1525,21 +1563,18 @@ export default function AppMigration({ visible }: { visible: boolean }) {
         // BLOCKED 前端拦截（后端 migration.rs 也有兜底防线）
         const blockedMsg = checkBlocked(app.install_location);
         if (blockedMsg) {
-          showToast(`${app.display_name}: ${blockedMsg}`, 'error');
-          failCount++;
-          failedApps.push(app.display_name);
+          results.push({ name: app.display_name, status: 'failed', reason: blockedMsg });
           continue;
         }
 
         // WARNING 检测 — 批量模式不弹窗，直接跳过提示单独迁移
         const warningInfo = checkWarning(app.install_location);
         if (warningInfo) {
-          showToast(
-            `${app.display_name}: 位于「${warningInfo.category}」(${warningInfo.label})，存在风险，已跳过。\n请在应用列表中单独迁移此项以查看详情。`,
-            'info'
-          );
-          failCount++;
-          failedApps.push(`${app.display_name}（高风���跳过）`);
+          results.push({
+            name: app.display_name,
+            status: 'skipped',
+            reason: `位于「${warningInfo.category}」(${warningInfo.label})，需单独迁移并确认风险`,
+          });
           continue;
         }
 
@@ -1578,16 +1613,21 @@ export default function AppMigration({ visible }: { visible: boolean }) {
             batchCancelledRef.current = true;
             break;
           }
-          showToast(`${app.display_name}: 存在进程占用，已跳过`, 'info');
-          failCount++;
-          failedApps.push(`${app.display_name}（进程占用跳过）`);
+          results.push({
+            name: app.display_name,
+            status: 'skipped',
+            reason: '有程序占用该目录，已跳过',
+          });
           continue;
         }
 
         // 目标路径已有残留目录 → 弹出确认框，用户确认后以 force_overwrite 重试
         const targetConflict = parseTargetExistsConflict(result.message);
         if (!result.success && targetConflict) {
-          if (batchCancelledRef.current) { failCount++; failedApps.push(app.display_name); continue; }
+          if (batchCancelledRef.current) {
+            results.push({ name: app.display_name, status: 'failed', reason: '批量已停止' });
+            continue;
+          }
           const promptMsg = targetConflict.isRetry
             ? `${app.display_name} 的目标位置已存在同名目录：\n${targetConflict.existingPath}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。\n覆盖将删除该目录后重新迁移，是否继续？`
             : `${app.display_name} 的目标路径已存在：\n${targetConflict.existingPath}\n\n覆盖将删除该目录后重新迁移，是否继续？`;
@@ -1606,36 +1646,43 @@ export default function AppMigration({ visible }: { visible: boolean }) {
               userConfirmedWarning: false,
             });
           } else {
-            showToast(`${app.display_name}: 已跳过（目标路径已存在）`, 'info');
-            failCount++;
-            failedApps.push(app.display_name);
+            results.push({
+              name: app.display_name,
+              status: 'skipped',
+              reason: '目标目录已存在，未覆盖',
+            });
             continue;
           }
         }
 
         // Junction 循环检测：原路径仍是 Junction 指向目标盘
         if (!result.success && result.message.startsWith('JUNCTION_LOOP:')) {
-          showToast(`${app.display_name}: 原路径仍是链接，请先在迁移记录中恢复后重试`, 'error');
-          failCount++;
-          failedApps.push(app.display_name);
+          results.push({
+            name: app.display_name,
+            status: 'failed',
+            reason: '原路径仍是目录链接，请先在迁移记录中恢复后重试',
+          });
           continue;
         }
 
         if (result.success) {
-          successCount++;
+          results.push({ name: app.display_name, status: 'success' });
         } else {
-          // 后端返回的错误（文件占用、空间不足、完整性校验失败等）
-          showToast(`${app.display_name}: ${formatMigrationFailureMessage(result.message)}`, 'error');
-          failCount++;
-          failedApps.push(app.display_name);
+          // 后端返回的错误（文件占用、空间不足、完整性校验失败等），原样带进结果清单
+          results.push({
+            name: app.display_name,
+            status: 'failed',
+            reason: formatMigrationFailureMessage(result.message),
+          });
         }
       } catch (error) {
         const errStr = String(error);
-        if (!errStr.includes('用户取消了迁移')) {
-          showToast(`${app.display_name}: ${error}`, 'error');
-          failedApps.push(app.display_name);
-        }
-        failCount++;
+        results.push({
+          name: app.display_name,
+          status: 'failed',
+          // 用户主动取消不算异常，如实标注即可
+          reason: errStr.includes('用户取消了迁移') ? '迁移被取消' : errStr,
+        });
       }
     }
 
@@ -1645,19 +1692,18 @@ export default function AppMigration({ visible }: { visible: boolean }) {
     setBatchMigrating(false);
     setBatchProgress({ current: 0, total: 0 });
 
-    // 关闭进度弹窗，显示汇总结果
+    // 关闭进度弹窗，再决定用 toast 还是结果清单收尾
     handleCloseMigrationModal();
 
-    if (batchCancelledRef.current) {
-      showToast(`批量迁移已停止，已完成 ${successCount} 个`, 'info');
-    } else if (failCount === 0) {
+    const successCount = results.filter((item) => item.status === 'success').length;
+    if (results.length === 0) {
+      showToast('批量迁移已停止，没有开始任何项目', 'info');
+    } else if (successCount === results.length) {
+      // 全部成功时没必要再弹清单，一个 toast 就够
       showToast(`批量迁移完成：${successCount} 个全部成功`, 'success');
     } else {
-      showToast(
-        `批量迁移完成：${successCount} 成功，${failCount} 失败` +
-        (failedApps.length > 0 ? `\n失败：${failedApps.join('、')}` : ''),
-        'info'
-      );
+      setBatchReport({ items: results, cancelled: batchCancelledRef.current });
+      setBatchReportVisible(true);
     }
 
     await handleRefresh();
@@ -1820,6 +1866,15 @@ export default function AppMigration({ visible }: { visible: boolean }) {
         }
         onClose={handleCloseMigrationModal}
         onRequestClose={handleRequestCloseDuringMigration}
+      />
+
+      {/* 批量结果清单：有失败或跳过时展示，替代含糊的 toast 汇总 */}
+      <BatchMigrationReport
+        isOpen={batchReportVisible}
+        onClose={() => setBatchReportVisible(false)}
+        title="应用迁移"
+        items={batchReport.items}
+        cancelled={batchReport.cancelled}
       />
 
       {/* 强力卸载残留清理弹窗 */}

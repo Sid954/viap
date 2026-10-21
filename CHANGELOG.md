@@ -8,6 +8,8 @@
 - Temporarily removed "Verify file integrity" from Settings → Security: its results are not reliable enough yet, so the entry is hidden instead of handing users an error.
 - Fixed the title bar showing through the launch screen under the Liquid Glass appearance.
 - The selection boxes in both the App Management and Data Migration lists are now circles, and clicking anywhere on a row selects it instead of requiring a precise hit on the box.
+- Batch migration is more transparent: the confirmation shows the total size and the target drive's free space, and a per-item result list explains any failures or skips afterwards. Also fixed batch migration hanging when the "program in use" prompt was closed.
+- Folders that no longer exist can no longer be selected, so a batch run no longer wastes time on them.
 
 ## v1.3.1
 
