@@ -6,7 +6,10 @@ import { ShieldCheck } from 'lucide-react';
 export default function StartupScreen() {
   return (
     <div
-      className="startup-screen fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+      // 层级必须高于所有界面元素：液态玻璃下标题栏被提到 1300（见 glass.css），弹窗是 1400。
+      // 启动页只用 z-100 时，玻璃模式下整条标题栏会露在启动页之外（普通模式不会，因为标题栏
+      // 那时是 z-index:auto）。启动页是开机遮罩，理应盖住一切，所以固定在最上层。
+      className="startup-screen fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden"
       // 必须走独立 token：液态玻璃外观下 --bg-app 被设为 transparent（让内容区露出背景光斑），
       // 启动页跟着用就会整层透明，直接看到底下已经渲染好的界面。
       // 用 backgroundColor 而不是 background 简写 —— 简写会连带把 background-image 重置为 none，

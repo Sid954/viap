@@ -2,6 +2,13 @@
 
 > English is the default changelog. See the [Chinese changelog](CHANGELOG-zh.md).
 
+## v1.3.2
+
+- The update prompt is now a dialog: read the release notes and decide in the same window, instead of a bar taking up the top of the app.
+- Batch migration is more transparent: the confirmation shows the total size and the target drive's free space, and a per-item list explains any failures or skips afterwards. Also fixed batch migration hanging when the "program in use" prompt was closed.
+- Selection is consistent across both lists: circles instead of boxes, clicking anywhere on a row selects it, and folders that no longer exist can no longer be selected.
+- Fixed the title bar showing through the launch screen under the Liquid Glass appearance; also removed "Verify file integrity" from Settings → Security for now, as its results are not reliable enough yet.
+
 ## v1.3.1
 
 - Polished the Liquid Glass appearance: the launch screen has its full background back, and dialogs, dropdowns and context menus now read as real translucent glass instead of stacked white patches. The Data Migration category rows no longer carry a background either.

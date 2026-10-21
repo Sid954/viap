@@ -151,10 +151,17 @@ const AppRow = memo(function AppRow({
     borderBottom: '1px solid var(--border-color-row)',
   } as React.CSSProperties;
 
+  // 整行当作复选框的 label：点击行内空白处即切换选中。
+  // 已迁移 / Viap 自身 / 操作锁定这三种情况下本来就不该被勾选，统一在这里判定，
+  // 行点击与复选框按钮共用同一个开关，避免两处条件写歪。
+  const selectable = !!showCheckbox && !isMigrated && !isViap && !operationsLocked;
+
   return (
     <div
-      className="flex items-center gap-3 transition-colors relative"
+      className={`flex items-center gap-3 transition-colors relative ${selectable ? 'cursor-pointer' : ''}`}
       style={rowStyle}
+      // 点行即切换勾选，行为对齐 <label>；行内按钮所在的容器会阻止冒泡，不会被连带选中
+      onClick={selectable ? () => onToggleSelect?.(app) : undefined}
       onMouseEnter={(e) => {
         if (!isSelected) (e.currentTarget as HTMLElement).style.background = 'var(--bg-row-hover)';
       }}
@@ -167,7 +174,7 @@ const AppRow = memo(function AppRow({
         <button
           onClick={(e) => { e.stopPropagation(); onToggleSelect?.(app); }}
           disabled={operationsLocked}
-          className={`flex-shrink-0 w-4 h-4 rounded-sm border flex items-center justify-center ${
+          className={`flex-shrink-0 w-4 h-4 rounded-full border flex items-center justify-center ${
             isSelected
               ? ''
               : 'border-[var(--border-color-strong)] opacity-60 hover:opacity-100'
@@ -226,8 +233,13 @@ const AppRow = memo(function AppRow({
         {formatSize(appSize ?? 0)}
       </span>
 
-      {/* actions — 用最小宽度而非固定宽度：字号调大时按钮可以变宽，避免文字换行 */}
-      <div className="flex items-center gap-1 flex-shrink-0" style={{ minWidth: '150px', justifyContent: 'flex-end' }}>
+      {/* actions — 用最小宽度而非固定宽度：字号调大时按钮可以变宽，避免文字换行。
+          容器统一阻止冒泡：整行现在点一下就切换勾选，点按钮时不能被连带选中。 */}
+      <div
+        className="flex items-center gap-1 flex-shrink-0"
+        style={{ minWidth: '150px', justifyContent: 'flex-end' }}
+        onClick={(event) => event.stopPropagation()}
+      >
         <button
           onClick={() => onOpenFolder(app)}
           disabled={operationsLocked}

@@ -18,8 +18,12 @@ import MigrationModal from '../components/MigrationModal';
 import TargetPickerDialog from '../components/TargetPickerDialog';
 import { useDangerousPathCheck, WarningInfo } from '../hooks/useDangerousPathCheck';
 import WarningConfirmDialog from '../components/WarningConfirmDialog';
+import BatchMigrationReport from '../components/BatchMigrationReport';
 import { useViapStore } from '../store';
 import { formatMigrationFailureMessage, parseTargetExistsConflict } from '../utils/migrationMessages';
+import {
+  buildBatchConfirmMessage, getAvailableSpaceForPath, type BatchReportItem,
+} from '../utils/batchMigration';
 import {
   LargeFolder, ProcessLockResult, LargeFolderSizeEvent,
   MigrationProgressEvent,
@@ -224,17 +228,24 @@ function FolderRow({
     opacity: notFound ? 0.4 : 1,
   } as React.CSSProperties;
 
+  // 整行当作复选框的 label：点行内空白处即切换选中。
+  // 已迁移（junction）与「未检测到」的条目都没有可迁移目标，两者都不给勾选，
+  // 否则批量迁移只会把它们逐个跑成失败。
+  const selectable = !!showCheckbox && !folder.is_junction && folder.exists;
+
   return (
     <div
-      className="flex items-center gap-3"
+      className={`flex items-center gap-3 ${selectable ? 'cursor-pointer' : ''}`}
       style={rowStyle}
+      // 点行即切换勾选，行为对齐 <label>；行尾按钮所在容器会阻止冒泡
+      onClick={selectable ? () => onToggleSelect?.(folder) : undefined}
       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-row-hover)'; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
     >
-      {/* 批量选择复选框 — 已迁移文件夹不显示 */}
-      {showCheckbox && !folder.is_junction && (
+      {/* 批量选择复选框 — 已迁移与未检测到的条目不给勾选，但仍占位保持列对齐 */}
+      {selectable && (
         <div
-          className="flex items-center justify-center w-4 h-4 rounded border cursor-pointer flex-shrink-0"
+          className="flex items-center justify-center w-4 h-4 rounded-full border cursor-pointer flex-shrink-0"
           style={{
             borderColor: isSelected ? 'var(--color-primary)' : 'var(--border-color-strong)',
             background: isSelected ? 'var(--color-primary)' : 'transparent',
@@ -244,7 +255,7 @@ function FolderRow({
           {isSelected && <Check className="w-3 h-3" style={{ color: '#fff' }} />}
         </div>
       )}
-      {showCheckbox && folder.is_junction && (
+      {showCheckbox && !selectable && (
         <div className="w-4 h-4 flex-shrink-0" />
       )}
       {/* icon */}
@@ -277,8 +288,8 @@ function FolderRow({
         {notFound ? '--' : folder.is_junction ? '--' : formatSize(folder.size)}
       </span>
 
-      {/* actions */}
-      <div className="flex items-center gap-1 flex-shrink-0">
+      {/* actions — 容器统一阻止冒泡：整行现在点一下就切换勾选，点按钮时不能被连带选中 */}
+      <div className="flex items-center gap-1 flex-shrink-0" onClick={(event) => event.stopPropagation()}>
         {!notFound && (
           <button onClick={() => onOpenFolder(folder.path)} className="btn btn-ghost btn-icon" title="打开目录">
             <FolderOpen className="w-3.5 h-3.5" />
@@ -348,6 +359,12 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const [batchMigrating, setBatchMigrating] = useState(false);
   const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
+  // 批量结果清单：只要出现失败或跳过就用它替代 toast 汇总
+  const [batchReport, setBatchReport] = useState<{ items: BatchReportItem[]; cancelled: boolean }>({
+    items: [],
+    cancelled: false,
+  });
+  const [batchReportVisible, setBatchReportVisible] = useState(false);
   const batchCancelledRef = useRef(false);
   // 批量模式下进程锁弹窗的 Promise resolve 函数
   const batchProcessLockResolveRef = useRef<((value: boolean) => void) | null>(null);
@@ -684,6 +701,14 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
 
   /** 关闭迁移弹窗 */
   function handleCloseMigrationModal() {
+    // 进程占用等待期间点 X / Esc / 遮罩都会走到这里，而 handleBatchMigrate 此刻正停在
+    // 一个「等用户决定继续还是跳过」的 Promise 上。不先把它解开，批量就会永远挂住：
+    // batchMigrating 再也回不去，工具栏一直显示「停止」而那个取消标志无人检查。
+    // 这里按「停止」处理，与用户主动关闭弹窗的意图一致。
+    if (batchProcessLockResolveRef.current) {
+      batchProcessLockResolveRef.current(false);
+      batchProcessLockResolveRef.current = null;
+    }
     setMigrationModalOpen(false);
     setMigratingFolder(null);
     setMigrationStep('idle');
@@ -709,30 +734,46 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
     handleCloseMigrationModal();
   }
 
-  /** 批量迁移：依次迁移每个选中的文件夹 */
   /** 批量迁移：依次迁移每个选中的文件夹，复用单个迁移的进度弹窗 */
   async function handleBatchMigrate() {
     if (selectedKeys.size === 0) return;
+
+    // 只处理真正可迁移的：已迁移、未检测到、已不在列表里的都排除，
+    // 免得把注定失败的项目排进批次，白跑一趟还制造失败记录
+    const selectedFolders = folders.filter(
+      (folder) => selectedKeys.has(folder.id) && folder.exists && !isFolderMigrated(folder),
+    );
+    if (selectedFolders.length === 0) return;
 
     const defaultTarget = loadDataDefaultTarget();
     const targetDir = await resolveDataMigrationTarget(defaultTarget, '批量迁移', setActiveTab, showTargetPicker);
     if (!targetDir) return;
 
-    const selectedFolders = folders.filter((f) => selectedKeys.has(f.id));
-    if (selectedFolders.length === 0) return;
+    // 确认框要回答三个问题：搬多少、目标盘够不够、哪些会因为高风险被跳过
+    const totalBytes = selectedFolders.reduce((sum, folder) => sum + Math.max(folder.size, 0), 0);
+    const riskyCount = selectedFolders.filter((folder) => checkWarning(folder.path) !== null).length;
+    const hasSystemFolder = selectedFolders.some((folder) => folder.folder_type === 'System');
+    const freeBytes = await getAvailableSpaceForPath(targetDir);
 
-    // 含系统文件夹时增加警告
-    const hasSystemFolder = selectedFolders.some(f => f.folder_type === 'System');
-    const confirmMsg = hasSystemFolder
-      ? `即将批量迁移 ${selectedFolders.length} 个文件夹（含系统文件夹）到：\n${targetDir}\n\n⚠ 系统文件夹迁移有风险，请确认已关闭相关应用。\n\n是否继续？`
-      : `即将批量迁移 ${selectedFolders.length} 个文件夹到：\n${targetDir}\n\n是否继续？`;
-
-    const confirmed = await confirm(confirmMsg, {
-      title: '确认批量迁移',
-      kind: hasSystemFolder ? 'warning' : 'info',
-      okLabel: '开始迁移',
-      cancelLabel: '取消',
-    });
+    const confirmed = await confirm(
+      buildBatchConfirmMessage({
+        noun: '个文件夹',
+        count: selectedFolders.length,
+        targetDir,
+        totalBytes,
+        freeBytes,
+        riskyCount,
+        extraWarning: hasSystemFolder
+          ? '⚠ 选择中包含系统文件夹（桌面 / 文档 / 下载等），迁移前请确认相关程序已关闭。'
+          : undefined,
+      }),
+      {
+        title: '确认批量迁移',
+        kind: hasSystemFolder ? 'warning' : 'info',
+        okLabel: '开始迁移',
+        cancelLabel: '取消',
+      },
+    );
     if (!confirmed) return;
 
     // 初始化批量状态
@@ -748,9 +789,9 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
     setMigrationProgress(0);
     setLockedProcesses([]);
 
-    let successCount = 0;
-    let failCount = 0;
-    const failedFolders: string[] = [];
+    // 逐项结果：批量里不能用 toast 报错（toast 只有单槽位，连续失败会互相覆盖），
+    // 统一收集后结束时弹一个结果清单
+    const results: BatchReportItem[] = [];
 
     for (let i = 0; i < selectedFolders.length; i++) {
       if (batchCancelledRef.current) break;
@@ -768,21 +809,18 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
         // BLOCKED 前端拦截
         const blockedMsg = checkBlocked(folder.path);
         if (blockedMsg) {
-          showToast(`${folder.display_name}: ${blockedMsg}`, 'error');
-          failCount++;
-          failedFolders.push(folder.display_name);
+          results.push({ name: folder.display_name, status: 'failed', reason: blockedMsg });
           continue;
         }
 
         // WARNING 检测 — 批量模式不弹窗，直接跳过
         const warningInfo = checkWarning(folder.path);
         if (warningInfo) {
-          showToast(
-            `${folder.display_name}: 位于「${warningInfo.category}」(${warningInfo.label})，存在风险，已跳过。\n请在文件夹列表中单独迁移此项以查看详情。`,
-            'info'
-          );
-          failCount++;
-          failedFolders.push(`${folder.display_name}（高风险跳过）`);
+          results.push({
+            name: folder.display_name,
+            status: 'skipped',
+            reason: `位于「${warningInfo.category}」(${warningInfo.label})，需单独迁移并确认风险`,
+          });
           continue;
         }
 
@@ -819,16 +857,21 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
             batchCancelledRef.current = true;
             break;
           }
-          showToast(`${folder.display_name}: 存在进程占用，已跳过`, 'info');
-          failCount++;
-          failedFolders.push(`${folder.display_name}（进程占用跳过）`);
+          results.push({
+            name: folder.display_name,
+            status: 'skipped',
+            reason: '有程序占用该目录，已跳过',
+          });
           continue;
         }
 
         // 处理 TARGET_EXISTS 特殊返回值（不能直接 Toast 路径字符串给用户）
         const targetConflict = parseTargetExistsConflict(result.message);
         if (!result.success && targetConflict) {
-          if (batchCancelledRef.current) { failCount++; failedFolders.push(folder.display_name); continue; }
+          if (batchCancelledRef.current) {
+            results.push({ name: folder.display_name, status: 'failed', reason: '批量已停止' });
+            continue;
+          }
           const promptMsg = targetConflict.isRetry
             ? `${folder.display_name} 的目标位置已存在同名目录：\n${targetConflict.existingPath}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。\n覆盖将删除该目录后重新迁移，是否继续？`
             : `${folder.display_name} 的目标路径已存在：\n${targetConflict.existingPath}\n\n是否覆盖？`;
@@ -847,34 +890,42 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
               userConfirmedWarning: false,
             });
             if (retryResult.success) {
-              successCount++;
+              results.push({ name: folder.display_name, status: 'success' });
             } else {
-              showToast(`${folder.display_name}: ${formatMigrationFailureMessage(retryResult.message)}`, 'error');
-              failCount++;
-              failedFolders.push(folder.display_name);
+              results.push({
+                name: folder.display_name,
+                status: 'failed',
+                reason: formatMigrationFailureMessage(retryResult.message),
+              });
             }
           } else {
-            failCount++;
-            failedFolders.push(folder.display_name);
+            results.push({
+              name: folder.display_name,
+              status: 'skipped',
+              reason: '目标目录已存在，未覆盖',
+            });
           }
           continue;
         }
 
         if (result.success) {
-          successCount++;
+          results.push({ name: folder.display_name, status: 'success' });
         } else {
-          // 后端错误消息（文件占用、空间不足等），直接显示
-          showToast(`${folder.display_name}: ${formatMigrationFailureMessage(result.message)}`, 'error');
-          failCount++;
-          failedFolders.push(folder.display_name);
+          // 后端错误消息（文件占用、空间不足等），原样带进结果清单
+          results.push({
+            name: folder.display_name,
+            status: 'failed',
+            reason: formatMigrationFailureMessage(result.message),
+          });
         }
       } catch (error) {
         const errStr = String(error);
-        if (!errStr.includes('用户取消了迁移')) {
-          showToast(`${folder.display_name}: ${error}`, 'error');
-          failedFolders.push(folder.display_name);
-        }
-        failCount++;
+        results.push({
+          name: folder.display_name,
+          status: 'failed',
+          // 用户主动取消不算异常，如实标注即可
+          reason: errStr.includes('用户取消了迁移') ? '迁移被取消' : errStr,
+        });
       }
     }
 
@@ -882,16 +933,15 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
     setBatchProgress({ current: 0, total: 0 });
     handleCloseMigrationModal();
 
-    if (batchCancelledRef.current) {
-      showToast(`批量迁移已停止，已完成 ${successCount} 个`, 'info');
-    } else if (failCount === 0) {
+    const successCount = results.filter((item) => item.status === 'success').length;
+    if (results.length === 0) {
+      showToast('批量迁移已停止，没有开始任何项目', 'info');
+    } else if (successCount === results.length) {
+      // 全部成功时没必要再弹清单，一个 toast 就够
       showToast(`批量迁移完成：${successCount} 个全部成功`, 'success');
     } else {
-      showToast(
-        `批量迁移完成：${successCount} 成功，${failCount} 失败` +
-        (failedFolders.length > 0 ? `\n失败：${failedFolders.join('、')}` : ''),
-        'info'
-      );
+      setBatchReport({ items: results, cancelled: batchCancelledRef.current });
+      setBatchReportVisible(true);
     }
 
     await fetchFolders();
@@ -1210,6 +1260,15 @@ export default function LargeFolders({ visible }: { visible: boolean }) {
           ? async () => { handleStopBatchMigrate(); }
           : handleRequestCloseDuringMigration
         }
+      />
+
+      {/* 批量结果清单：有失败或跳过时展示，替代含糊的 toast 汇总 */}
+      <BatchMigrationReport
+        isOpen={batchReportVisible}
+        onClose={() => setBatchReportVisible(false)}
+        title="数据迁移"
+        items={batchReport.items}
+        cancelled={batchReport.cancelled}
       />
 
       {/* Toast 根据通知类型自动选择停留时间，错误提示默认更久。 */}
