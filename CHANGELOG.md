@@ -2,14 +2,12 @@
 
 > English is the default changelog. See the [Chinese changelog](CHANGELOG-zh.md).
 
-## Unreleased
+## v1.3.2
 
-- The update prompt is now a dialog: when a new version is found it opens on its own with the release notes, so you can read what changed before deciding. It no longer takes up a bar at the top of the app.
-- Temporarily removed "Verify file integrity" from Settings → Security: its results are not reliable enough yet, so the entry is hidden instead of handing users an error.
-- Fixed the title bar showing through the launch screen under the Liquid Glass appearance.
-- The selection boxes in both the App Management and Data Migration lists are now circles, and clicking anywhere on a row selects it instead of requiring a precise hit on the box.
-- Batch migration is more transparent: the confirmation shows the total size and the target drive's free space, and a per-item result list explains any failures or skips afterwards. Also fixed batch migration hanging when the "program in use" prompt was closed.
-- Folders that no longer exist can no longer be selected, so a batch run no longer wastes time on them.
+- The update prompt is now a dialog: read the release notes and decide in the same window, instead of a bar taking up the top of the app.
+- Batch migration is more transparent: the confirmation shows the total size and the target drive's free space, and a per-item list explains any failures or skips afterwards. Also fixed batch migration hanging when the "program in use" prompt was closed.
+- Selection is consistent across both lists: circles instead of boxes, clicking anywhere on a row selects it, and folders that no longer exist can no longer be selected.
+- Fixed the title bar showing through the launch screen under the Liquid Glass appearance; also removed "Verify file integrity" from Settings → Security for now, as its results are not reliable enough yet.
 
 ## v1.3.1
 

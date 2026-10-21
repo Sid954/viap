@@ -82,7 +82,7 @@ function formatSize(bytes: number): string {
 const APP_INFO = {
   name: 'Viap',
   description: 'Windows 应用管理与存储重定向工具',
-  email: '1378813463@qq.com',
+  email: 'evanlau.hh@qq.com',
 };
 
 // 默认目标路径初始为空，由用户手动配置；仅允许选择 C 盘以外的目录。
