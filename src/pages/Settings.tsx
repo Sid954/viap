@@ -53,11 +53,9 @@ interface CleanupResult {
   errors: string[];
 }
 
-interface IntegrityCheckResult {
-  status: 'verified' | 'tampered' | 'network_error' | 'signature_not_found' | 'signature_invalid' | 'local_file_error' | 'configuration_error';
-  message: string;
-  asset_name: string | null;
-}
+// 完整性校验（原「设置 → 安全」）暂时从界面移除：线上发布资产的签名覆盖仍不稳定，
+// 用户点了也大概率只看到报错，不如先隐藏。后端 `verify_file_integrity` 命令与
+// src-tauri/src/integrity/ 的实现都保留，方案确定后按 git 历史接回界面即可。
 
 /** 配置文件展示文案：与后端返回的 id 一一对应，界面文案不写进后端 */
 const CONFIG_FILE_COPY: Record<string, { label: string; description: string; missingDescription: string }> = {
@@ -265,7 +263,6 @@ export default function Settings({ visible: _visible }: { visible: boolean }) {
   const [backupInfo, setBackupInfo] = useState<MirrorBackupInfo | null>(null);
   const [backupRunning, setBackupRunning] = useState(false);
   const [copiedLabel, setCopiedLabel] = useState<string | null>(null);
-  const [integrityChecking, setIntegrityChecking] = useState(false);
   const currentYear = new Date().getFullYear();
 
   /** 一键复制到剪贴板，成功后短暂显示已复制状态 */
@@ -363,21 +360,6 @@ export default function Settings({ visible: _visible }: { visible: boolean }) {
       await invoke('open_folder', { path: targetPath || entry.path });
     } catch (error) {
       showToast(`打开配置文件失败: ${error}`, 'error');
-    }
-  }
-
-  async function handleVerifyFileIntegrity() {
-    if (integrityChecking) return;
-    setIntegrityChecking(true);
-    try {
-      const checkResult = await invoke<IntegrityCheckResult>('verify_file_integrity');
-      const toastType = checkResult.status === 'verified' ? 'success' : 'error';
-      // 网络和签名异常需要给用户足够时间阅读，避免误以为程序已完成安全判断。
-      showToast(checkResult.message, toastType, 10000);
-    } catch (error) {
-      showToast(`完整性校验服务调用失败，请稍后重试：${error}`, 'error', 10000);
-    } finally {
-      setIntegrityChecking(false);
     }
   }
 
@@ -957,30 +939,6 @@ export default function Settings({ visible: _visible }: { visible: boolean }) {
                   </button>
                 ) : null}
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 安全：完整性校验属于独立的安全操作，避免与版本更新混在同一张卡片中。 */}
-        <section>
-          <SectionHeader label="安全" />
-          <div className="rounded border glass-card" style={{ borderColor: 'var(--border-color)' }}>
-            <div className="flex items-center gap-3" style={{ padding: '10px 14px' }}>
-              <div className="w-8 h-8 rounded flex items-center justify-center" style={{ background: 'var(--color-primary-light)' }}>
-                <ShieldCheck className={`w-4 h-4 ${integrityChecking ? 'animate-pulse' : ''}`} style={{ color: 'var(--color-primary)' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="setting-label">校验文件完整性（Beta）</p>
-                <p className="setting-desc">通过 GitHub Releases 签名验证当前程序是否被篡改</p>
-              </div>
-              <button
-                onClick={handleVerifyFileIntegrity}
-                disabled={integrityChecking}
-                className="btn h-7 text-[11px] flex-shrink-0"
-              >
-                {integrityChecking ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
-                {integrityChecking ? '校验中...' : '开始校验'}
-              </button>
             </div>
           </div>
         </section>

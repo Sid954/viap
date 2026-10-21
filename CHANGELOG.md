@@ -2,6 +2,11 @@
 
 > English is the default changelog. See the [Chinese changelog](CHANGELOG-zh.md).
 
+## Unreleased
+
+- The update prompt is now a dialog: when a new version is found it opens on its own with the release notes, so you can read what changed before deciding. It no longer takes up a bar at the top of the app.
+- Temporarily removed "Verify file integrity" from Settings → Security: its results are not reliable enough yet, so the entry is hidden instead of handing users an error.
+
 ## v1.3.1
 
 - Polished the Liquid Glass appearance: the launch screen has its full background back, and dialogs, dropdowns and context menus now read as real translucent glass instead of stacked white patches. The Data Migration category rows no longer carry a background either.
