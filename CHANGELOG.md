@@ -7,6 +7,7 @@
 - The update prompt is now a dialog: when a new version is found it opens on its own with the release notes, so you can read what changed before deciding. It no longer takes up a bar at the top of the app.
 - Temporarily removed "Verify file integrity" from Settings → Security: its results are not reliable enough yet, so the entry is hidden instead of handing users an error.
 - Fixed the title bar showing through the launch screen under the Liquid Glass appearance.
+- The selection boxes in both the App Management and Data Migration lists are now circles, and clicking anywhere on a row selects it instead of requiring a precise hit on the box.
 
 ## v1.3.1
 

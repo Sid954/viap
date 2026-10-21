@@ -224,17 +224,23 @@ function FolderRow({
     opacity: notFound ? 0.4 : 1,
   } as React.CSSProperties;
 
+  // 整行当作复选框的 label：点行内空白处即切换选中。
+  // 已迁移（junction）的条目没有复选框，自然也不能点行选中。
+  const selectable = !!showCheckbox && !folder.is_junction;
+
   return (
     <div
-      className="flex items-center gap-3"
+      className={`flex items-center gap-3 ${selectable ? 'cursor-pointer' : ''}`}
       style={rowStyle}
+      // 点行即切换勾选，行为对齐 <label>；行尾按钮所在容器会阻止冒泡
+      onClick={selectable ? () => onToggleSelect?.(folder) : undefined}
       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-row-hover)'; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
     >
       {/* 批量选择复选框 — 已迁移文件夹不显示 */}
       {showCheckbox && !folder.is_junction && (
         <div
-          className="flex items-center justify-center w-4 h-4 rounded border cursor-pointer flex-shrink-0"
+          className="flex items-center justify-center w-4 h-4 rounded-full border cursor-pointer flex-shrink-0"
           style={{
             borderColor: isSelected ? 'var(--color-primary)' : 'var(--border-color-strong)',
             background: isSelected ? 'var(--color-primary)' : 'transparent',
@@ -277,8 +283,8 @@ function FolderRow({
         {notFound ? '--' : folder.is_junction ? '--' : formatSize(folder.size)}
       </span>
 
-      {/* actions */}
-      <div className="flex items-center gap-1 flex-shrink-0">
+      {/* actions — 容器统一阻止冒泡：整行现在点一下就切换勾选，点按钮时不能被连带选中 */}
+      <div className="flex items-center gap-1 flex-shrink-0" onClick={(event) => event.stopPropagation()}>
         {!notFound && (
           <button onClick={() => onOpenFolder(folder.path)} className="btn btn-ghost btn-icon" title="打开目录">
             <FolderOpen className="w-3.5 h-3.5" />
