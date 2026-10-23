@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import { extractSource, rewriteSource } from '../ts-tool/index.mjs';
 import { corpusId } from '../lib/id.mjs';
 import { jsxWhitespace } from '../lib/normalize.mjs';
+import { applyPins, substitutePins, validatePinned } from '../lib/pins.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const RUST_BIN = join(here, '../rust-tool/target/release/l10n-rust-tool.exe');
@@ -40,6 +41,37 @@ ok('corpusId: known sha1 vector', () => {
   const id = corpusId('已迁移 {0} 个应用');
   assert.match(id, /^[0-9a-f]{16}$/);
   assert.equal(id, corpusId('已迁移 {0} 个应用')); // deterministic
+});
+
+// ─── pinned fragments (Phase 2 class B) ────────────────────────────────────
+
+ok('pins: longest-first nesting, substitution, violation catching', () => {
+  const frags = [
+    { id: 'f1', source: '用户取消了迁移' },
+    { id: 'f2', source: '取消' },
+  ];
+  // nested fragment collapses into the longer one
+  const a = applyPins('用户取消了迁移（目标路径已存在）', frags);
+  assert.deepEqual(Object.keys(a.pins), ['P1']);
+  assert.equal(a.pins.P1.id, 'f1');
+  assert.equal(a.text, '{P1}（目标路径已存在）');
+  // standalone fragment gets its own pin
+  const b = applyPins('迁移已取消', frags);
+  assert.equal(b.text, '迁移已{P1}');
+  assert.equal(b.pins.P1.id, 'f2');
+
+  // substitution + containment (the invariant that guards includes() logic)
+  const en = { f1: 'cancelled by user', f2: 'cancelled' };
+  const t1 = substitutePins('Migration was {P1} (target exists)', a.pins, en);
+  assert.equal(t1.missing.length, 0);
+  assert.ok(t1.text.includes(en.f1));
+  const t2 = substitutePins('Migration {P1}', b.pins, en);
+  assert.ok(t2.text.includes(en.f2));
+
+  // a model translation that drops the pin is caught before substitution
+  const errs = validatePinned('Migration cancelled (target exists)', a.pins);
+  assert.equal(errs.length, 1);
+  assert.match(errs[0], /dropped pin \{P1\}/);
 });
 
 // ─── cross-tool fixtures ──────────────────────────────────────────────────

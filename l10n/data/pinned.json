@@ -1,0 +1,220 @@
+{
+  "note": "B fragments: translate fragments first (longest first — deps), then messages with {PN} tokens; substitute and validate M_en.includes(F_en).",
+  "fragments": [
+    {
+      "id": "20df82c095d66141",
+      "source": "卸载命令执行失败",
+      "deps": [],
+      "pinned_in": [
+        {
+          "id": "b2e9656a3ccdbbfb",
+          "source": "卸载命令执行失败：{0}",
+          "pinned_source": "{P1}：{0}",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "3936f6a6e6949adb",
+      "source": "用户取消了迁移",
+      "deps": [],
+      "pinned_in": [
+        {
+          "id": "01a6e2daab56e278",
+          "source": "用户取消了迁移（目标路径已存在）",
+          "pinned_source": "{P1}（目标路径已存在）",
+          "pin": "P1"
+        },
+        {
+          "id": "ac9315ea705e2261",
+          "source": "用户取消了迁移（目标路径已存在残留目录）",
+          "pinned_source": "{P1}（目标路径已存在残留目录）",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "4d0b4688c787cf6c",
+      "source": "取消",
+      "deps": [
+        "3936f6a6e6949adb"
+      ],
+      "pinned_in": [
+        {
+          "id": "01a6e2daab56e278",
+          "source": "用户取消了迁移（目标路径已存在）",
+          "pinned_source": "用户{P1}了迁移（目标路径已存在）",
+          "pin": "P1"
+        },
+        {
+          "id": "0b003e14aa50f068",
+          "source": "检测已取消",
+          "pinned_source": "检测已{P1}",
+          "pin": "P1"
+        },
+        {
+          "id": "1017b0536616f2cd",
+          "source": "取消迁移",
+          "pinned_source": "{P1}迁移",
+          "pin": "P1"
+        },
+        {
+          "id": "31e0537932d73f09",
+          "source": "正在取消迁移...",
+          "pinned_source": "正在{P1}迁移...",
+          "pin": "P1"
+        },
+        {
+          "id": "3936f6a6e6949adb",
+          "source": "用户取消了迁移",
+          "pinned_source": "用户{P1}了迁移",
+          "pin": "P1"
+        },
+        {
+          "id": "61a71035949b27d4",
+          "source": "迁移被取消",
+          "pinned_source": "迁移被{P1}",
+          "pin": "P1"
+        },
+        {
+          "id": "7115f2e29d8e214c",
+          "source": "取消下载",
+          "pinned_source": "{P1}下载",
+          "pin": "P1"
+        },
+        {
+          "id": "78fe5b036cd3d99f",
+          "source": "取消全选",
+          "pinned_source": "{P1}全选",
+          "pin": "P1"
+        },
+        {
+          "id": "7a92e492724591c7",
+          "source": "正在取消迁移，请稍候...",
+          "pinned_source": "正在{P1}迁移，请稍候...",
+          "pin": "P1"
+        },
+        {
+          "id": "7e497d7b784d9b8c",
+          "source": "用户取消了链接识别",
+          "pinned_source": "用户{P1}了链接识别",
+          "pin": "P1"
+        },
+        {
+          "id": "ac9315ea705e2261",
+          "source": "用户取消了迁移（目标路径已存在残留目录）",
+          "pinned_source": "用户{P1}了迁移（目标路径已存在残留目录）",
+          "pin": "P1"
+        },
+        {
+          "id": "b3d90488e28ef8a8",
+          "source": "迁移已被取消",
+          "pinned_source": "迁移已被{P1}",
+          "pin": "P1"
+        },
+        {
+          "id": "d26c7b7bf3ea1e10",
+          "source": "确定要取消当前迁移吗？\n\n已复制的文件将被清理，操作不可撤销。",
+          "pinned_source": "确定要{P1}当前迁移吗？\n\n已复制的文件将被清理，操作不可撤销。",
+          "pin": "P1"
+        },
+        {
+          "id": "ecc9a254789b0dec",
+          "source": "<1/>取消迁移",
+          "pinned_source": "<1/>{P1}迁移",
+          "pin": "P1"
+        },
+        {
+          "id": "f02e9439542f1e56",
+          "source": "取消选择",
+          "pinned_source": "{P1}选择",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "7cf0c5b6b19c8be3",
+      "source": "另一个恢复任务",
+      "deps": [],
+      "pinned_in": [
+        {
+          "id": "d96841454ca90cfe",
+          "source": "另一个恢复任务正在进行中，请等待完成后再试",
+          "pinned_source": "{P1}正在进行中，请等待完成后再试",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "9277248a3ee83cf8",
+      "source": "检测到以下程序",
+      "deps": [
+        "b4af90d71ac41eb3"
+      ],
+      "pinned_in": [
+        {
+          "id": "8d29239f7e2d9765",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}",
+          "pinned_source": "{P1}正在运行，请关闭后重试：\n{0}",
+          "pin": "P1"
+        },
+        {
+          "id": "b4af90d71ac41eb3",
+          "source": "检测到以下程序正在运行",
+          "pinned_source": "{P1}正在运行",
+          "pin": "P1"
+        },
+        {
+          "id": "c27522dff73428ff",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+          "pinned_source": "{P1}正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+          "pin": "P1"
+        },
+        {
+          "id": "ebb4465fa57b6443",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+          "pinned_source": "{P1}正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "b4af90d71ac41eb3",
+      "source": "检测到以下程序正在运行",
+      "deps": [],
+      "pinned_in": [
+        {
+          "id": "8d29239f7e2d9765",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}",
+          "pinned_source": "{P1}，请关闭后重试：\n{0}",
+          "pin": "P1"
+        },
+        {
+          "id": "c27522dff73428ff",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+          "pinned_source": "{P1}，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+          "pin": "P1"
+        },
+        {
+          "id": "ebb4465fa57b6443",
+          "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+          "pinned_source": "{P1}，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+          "pin": "P1"
+        }
+      ]
+    },
+    {
+      "id": "dbc7ec2a7a0f3dc1",
+      "source": "仍检测到应用存在",
+      "deps": [],
+      "pinned_in": [
+        {
+          "id": "a3487eed76a4a664",
+          "source": "卸载命令已执行，但仍检测到应用存在：可能卸载程序还在后台运行，或未在卸载向导中确认完成：{0}",
+          "pinned_source": "卸载命令已执行，但{P1}：可能卸载程序还在后台运行，或未在卸载向导中确认完成：{0}",
+          "pin": "P1"
+        }
+      ]
+    }
+  ]
+}

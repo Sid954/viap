@@ -90,7 +90,7 @@ fn main() {
                 if !prefix.is_empty() {
                     rel = format!("{}/{}", prefix.trim_end_matches('/'), rel);
                 }
-                let r = process_source(&text, &rel, None, None);
+                let r = process_source(&text, &rel, None, None, None);
                 for e in r.entries {
                     merge_entry(&mut entries, e);
                 }
@@ -122,12 +122,28 @@ fn main() {
                     .expect("deny json"),
                 None => HashSet::new(),
             };
+            // occurrence-level denies: [{file, line}, …] from denylist.json .occurrences
+            let deny_occ: HashSet<(String, usize)> = match get("--deny-occ") {
+                Some(p) => {
+                    let raw: Vec<serde_json::Value> =
+                        serde_json::from_str(&fs::read_to_string(p).expect("read deny-occ"))
+                            .expect("deny-occ json");
+                    raw.into_iter()
+                        .filter_map(|v| {
+                            let f = v.get("file")?.as_str()?.to_string();
+                            let l = v.get("line")?.as_u64()? as usize;
+                            Some((f, l))
+                        })
+                        .collect()
+                }
+                None => HashSet::new(),
+            };
             let files = collect_rs_files(&src);
             let mut changed = 0usize;
             for f in &files {
                 let text = fs::read_to_string(f).expect("read");
                 let rel = posix_rel(&src, f);
-                let r = process_source(&text, &rel, Some(&tm), Some(&deny));
+                let r = process_source(&text, &rel, Some(&tm), Some(&deny), Some(&deny_occ));
                 if r.changed {
                     fs::write(f, r.new_text.unwrap()).expect("write");
                     changed += 1;

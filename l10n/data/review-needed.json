@@ -12,5 +12,125 @@
     "item": "release.yml-disable",
     "detail": "Phase 0 step 3: disable upstream's release.yml in the fork so tag pushes cannot trigger a Chinese build. STATUS: currently vacuous - GitHub Actions is not yet active on Sid954/viap (API reports 0 workflows as of 2026-10-24), so release.yml cannot trigger today. It becomes live the moment Actions activates (first push of any workflow file). OWNER ACTION (before Phase 5's first tag push, and ideally right after enabling Actions): run `gh auth login` once, then `gh workflow disable release.yml -R Sid954/viap`; or in the browser: fork page -> Actions tab -> enable if prompted -> Workflows -> Release -> '...' -> Disable workflow.",
     "blocking": false
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src-tauri/src/app_manager/detector.rs",
+    "line": 184,
+    "detail": ".join('…') with CJK argument at src-tauri/src/app_manager/detector.rs:184 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (3a5a55d0b30510b0). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src-tauri/src/app_manager/scanner.rs",
+    "line": 320,
+    "detail": ".join('…') with CJK argument at src-tauri/src/app_manager/scanner.rs:320 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/CleanupModal.tsx",
+    "line": 102,
+    "detail": ".join('…') with CJK argument at src/components/CleanupModal.tsx:102 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/CleanupModal.tsx",
+    "line": 103,
+    "detail": ".join('…') with CJK argument at src/components/CleanupModal.tsx:103 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/UninstallReportModal.tsx",
+    "line": 104,
+    "detail": ".join('…') with CJK argument at src/components/UninstallReportModal.tsx:104 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/UninstallReportModal.tsx",
+    "line": 107,
+    "detail": ".join('…') with CJK argument at src/components/UninstallReportModal.tsx:107 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/UninstallReportModal.tsx",
+    "line": 110,
+    "detail": ".join('…') with CJK argument at src/components/UninstallReportModal.tsx:110 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/components/UninstallReportModal.tsx",
+    "line": 287,
+    "detail": ".join('…') with CJK argument at src/components/UninstallReportModal.tsx:287 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/pages/AppMigration.tsx",
+    "line": 980,
+    "detail": ".join('…') with CJK argument at src/pages/AppMigration.tsx:980 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/pages/AppMigration.tsx",
+    "line": 1348,
+    "detail": ".split('…') with CJK argument at src/pages/AppMigration.tsx:1348 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/pages/AppMigration.tsx",
+    "line": 1595,
+    "detail": ".split('…') with CJK argument at src/pages/AppMigration.tsx:1595 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "watch-method",
+    "file": "src/pages/LargeFolders.tsx",
+    "line": 839,
+    "detail": ".split('…') with CJK argument at src/pages/LargeFolders.tsx:839 — separator/pattern semantics; safe only because both producer and consumer share the corpus id (611e057fbc79e7c2). Confirm translation keeps them consistent.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "class-C-confirm",
+    "file": "src-tauri/src/app_manager/uninstaller.rs",
+    "line": 2979,
+    "detail": "\"卸载\" matched against external text via .contains() (receiver: lower). Denylisted at this occurrence only. Confirm this is Windows/external text.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "class-C-confirm",
+    "file": "src-tauri/src/migration/mod.rs",
+    "line": 628,
+    "detail": "\"拒绝访问\" matched against external text via .contains() (receiver: e). Denylisted. Confirm this is Windows/external text.",
+    "generated": true
+  },
+  {
+    "added_in_phase": 2,
+    "item": "class-C-confirm",
+    "file": "src-tauri/src/app_manager/uninstaller.rs",
+    "line": 1694,
+    "detail": "\"需要提升\" matched against external text via .contains() (receiver: normalized). Denylisted. Confirm this is Windows/external text.",
+    "generated": true
   }
 ]

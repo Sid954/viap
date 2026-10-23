@@ -1,0 +1,33 @@
+{
+  "note": "ids: never translate these entries. occurrences: deny only this occurrence (file:line), keep other occurrences translatable.",
+  "ids": {
+    "fc97c0a3e184980d": {
+      "source": "拒绝访问",
+      "reason": "class C: contains() on external text (receiver: e) — no other occurrences"
+    },
+    "fdb92139e3a019cd": {
+      "source": "需要提升",
+      "reason": "class C: contains() on external text (receiver: normalized) — no other occurrences"
+    }
+  },
+  "occurrences": [
+    {
+      "file": "src-tauri/src/app_manager/uninstaller.rs",
+      "line": 2979,
+      "source": "卸载",
+      "reason": "class C: Rust .contains() on external text (receiver: lower)"
+    },
+    {
+      "file": "src-tauri/src/migration/mod.rs",
+      "line": 628,
+      "source": "拒绝访问",
+      "reason": "class C: Rust .contains() on external text (receiver: e)"
+    },
+    {
+      "file": "src-tauri/src/app_manager/uninstaller.rs",
+      "line": 1694,
+      "source": "需要提升",
+      "reason": "class C: Rust .contains() on external text (receiver: normalized)"
+    }
+  ]
+}

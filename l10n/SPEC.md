@@ -222,6 +222,29 @@ Edits never partially overlap (an assertion kills the run if they do).
 - Idempotency: after apply, extraction of the rewritten file yields the same entry ids for every
   still-Chinese (denylisted) entry and no new entries; translated spans contain no CJK.
 
+## 6a. Logic context (Phase 2) and deny handling
+
+Occurrences may carry a `logic` field describing a match/comparison position:
+
+- TS: `method-arg` (`.includes/.startsWith/.endsWith/.indexOf/.match/.test`
+  argument; `receiver` = receiver source, `known` flag), `compare`, `case`,
+  `object-key`, `index`; unknown method args are recorded with `known:false`
+  and are NOT logic.
+- Rust: `method-arg` (`.contains/.starts_with/.ends_with/.find/.rfind`),
+  `compare` (`==`/`!=`), `match-arm`; `matches!` is not inert (flagged).
+
+Denylist (`l10n/data/denylist.json`):
+
+- `ids` — never translate the entry anywhere.
+- `occurrences` — `[{file, line}]` — deny only that occurrence (rust-tool
+  `--deny-occ`); used when an external-text check shares its id with UI text.
+
+Pinned fragments (`l10n/data/pinned.json`): class-B fragments carry M-sets
+(messages containing F), pin layout `{P1}` (longest fragment first), and
+`deps` (fragment-in-fragment chains). Invariant: the outer fragment's English
+must contain the inner fragment's English verbatim (case-sensitive), and
+every M_en must contain each pinned F_en.
+
 ## 7. Determinism
 
 - File iteration: sorted POSIX paths (`src/**/*.{ts,tsx}` for ts-tool, `src-tauri/src/**/*.rs`

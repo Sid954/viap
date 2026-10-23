@@ -24,6 +24,47 @@ function isLogCall(call) {
   return name != null && /^(console|logger)(\.|$)/.test(name);
 }
 
+/** Methods whose string argument is matched against other text (SPEC § Phase 2 B). */
+const LOGIC_METHODS = new Set([
+  'includes', 'startsWith', 'endsWith', 'indexOf', 'match', 'test',
+]);
+
+/**
+ * Logic context of a literal occurrence (Phase 2 classification input):
+ * method-arg (substring match), compare (exact match), case, object-key,
+ * index (computed property lookup). Unknown methods are recorded with
+ * known:false so classify.mjs can flag them for review.
+ */
+function logicFor(node) {
+  const p = node.parent;
+  if (!p) return undefined;
+  if (ts.isCallExpression(p) && p.arguments.includes(node)) {
+    const callee = p.expression;
+    if (ts.isPropertyAccessExpression(callee)) {
+      const method = callee.name.text;
+      return {
+        type: 'method-arg',
+        method,
+        receiver: callee.expression.getText().slice(0, 80),
+        known: LOGIC_METHODS.has(method),
+      };
+    }
+    return { type: 'call-arg', callee: callee.getText().slice(0, 60) };
+  }
+  if (
+    ts.isBinaryExpression(p) &&
+    ['===', '!==', '==', '!='].includes(p.operatorToken.getText()) &&
+    (p.left === node || p.right === node)
+  ) {
+    return { type: 'compare', op: p.operatorToken.getText() };
+  }
+  if (ts.isCaseClause(p) && p.expression === node) return { type: 'case' };
+  if (ts.isPropertyAssignment(p) && p.name === node) return { type: 'object-key' };
+  if (ts.isElementAccessExpression(p) && p.argumentExpression === node)
+    return { type: 'index' };
+  return undefined;
+}
+
 function nearestCallableName(node) {
   let n = node;
   while (n) {
@@ -74,7 +115,7 @@ class Extractor {
     this.pendingData = null; // set by template/group visitors before addEntry
   }
 
-  addEntry(kind, normalized, placeholders, start, end, hintParts) {
+  addEntry(kind, normalized, placeholders, start, end, hintParts, logic) {
     normalized = nfc(normalized);
     if (!hasCJK(normalized)) return null;
     const id = corpusId(normalized);
@@ -93,14 +134,16 @@ class Extractor {
     }
     if (!e.kinds.includes(kind)) e.kinds.push(kind);
     const { line, character } = this.sf.getLineAndCharacterOfPosition(start);
-    e.occurrences.push({
+    const occ = {
       file: this.relPath,
       line: line + 1,
       col: character + 1,
       start,
       end,
       tool: 'ts',
-    });
+    };
+    if (logic) occ.logic = logic;
+    e.occurrences.push(occ);
     e.occurrences.sort((a, b) =>
       a.file === b.file ? a.start - b.start : a.file < b.file ? -1 : 1
     );
@@ -188,7 +231,8 @@ class Extractor {
         {},
         node.getStart(this.sf),
         node.end,
-        [hintFor(node, extra)]
+        [hintFor(node, extra)],
+        isAttr ? undefined : logicFor(node)
       );
       return;
     }
@@ -196,7 +240,7 @@ class Extractor {
       if (hasCJK(node.text)) {
         this.addEntry('template', node.text, {}, node.getStart(this.sf), node.end, [
           hintFor(node),
-        ]);
+        ], logicFor(node));
       }
       return;
     }
@@ -283,7 +327,7 @@ class Extractor {
     this.pendingData = { phSpans };
     this.addEntry('template', normalized, placeholders, node.getStart(this.sf), node.end, [
       hintFor(node),
-    ]);
+    ], logicFor(node));
   }
 
   isGroup(el) {
