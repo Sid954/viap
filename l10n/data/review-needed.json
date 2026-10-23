@@ -1,0 +1,16 @@
+[
+  {
+    "added_in_phase": 0,
+    "date": "2026-10-24",
+    "item": "dev-env",
+    "detail": "cargo/rustc, gh, and VS Build Tools were NOT installed on this PC at Phase 0 start. The agent installed them via winget to satisfy Phase 0 baselines: Microsoft.VisualStudio.2022.BuildTools (VCTools workload), Rustlang.Rustup, GitHub.cli. Owner: confirm this is acceptable; uninstall via winget if not.",
+    "blocking": false
+  },
+  {
+    "added_in_phase": 0,
+    "date": "2026-10-24",
+    "item": "release.yml-disable",
+    "detail": "Phase 0 step 3: disable upstream's release.yml in the fork so tag pushes cannot trigger a Chinese build. STATUS: currently vacuous - GitHub Actions is not yet active on Sid954/viap (API reports 0 workflows as of 2026-10-24), so release.yml cannot trigger today. It becomes live the moment Actions activates (first push of any workflow file). OWNER ACTION (before Phase 5's first tag push, and ideally right after enabling Actions): run `gh auth login` once, then `gh workflow disable release.yml -R Sid954/viap`; or in the browser: fork page -> Actions tab -> enable if prompted -> Workflows -> Release -> '...' -> Disable workflow.",
+    "blocking": false
+  }
+]

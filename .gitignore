@@ -30,3 +30,8 @@ AGENTS.*
 *.sln
 *.sw?
 
+
+# l10n pipeline (English localization fork)
+.l10n-work/
+*.key
+*.gguf

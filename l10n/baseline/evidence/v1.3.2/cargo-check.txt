@@ -1,0 +1,2 @@
+    Checking viap v1.3.2 (D:\sid\STUDY\Coding\viap\.l10n-work\upstream\src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 16.19s
