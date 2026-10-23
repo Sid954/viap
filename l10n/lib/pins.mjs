@@ -35,13 +35,16 @@ export function applyPins(source, fragments) {
 
 /**
  * Substitute {PN} tokens with the fragment's English.
- * Returns { text, missing: string[] } — missing lists pins whose English is
- * absent from enById (dependency must be translated first).
+ * `pins` values may be a bare fragment id (pending.mjs shape) or
+ * {id, source} (applyPins shape).
+ * Returns { text, missing: string[] } — missing lists fragment ids whose
+ * English is absent from enById (dependency must be translated first).
  */
 export function substitutePins(translated, pins, enById) {
   const missing = [];
   let text = translated;
-  for (const [key, { id }] of Object.entries(pins)) {
+  for (const [key, val] of Object.entries(pins)) {
+    const id = typeof val === 'string' ? val : val.id;
     const en = enById[id];
     if (en == null) {
       missing.push(id);
