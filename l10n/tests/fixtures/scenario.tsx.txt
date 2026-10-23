@@ -1,0 +1,10 @@
+import x from '模块'; // skipped (module specifier)
+const a = setError('发生错误');
+const t = `已迁移 ${count} 个应用，${ok ? '成功' : '失败'}`;
+const el = (
+  <div title="提示">
+    <p>发现 <strong>{entries.length}</strong> 个联接候选</p>
+    <span>{cond && (<em>其中 {n} 条已有记录</em>)}</span>
+  </div>
+);
+console.log('日志中文不提取');
