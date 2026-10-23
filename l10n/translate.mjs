@@ -30,7 +30,7 @@ const ENDPOINT =
 const PENDING = get('--pending') ?? 'data/pending.json';
 const OUT = get('--out') ?? 'data/translations.json';
 const MODEL = get('--model') ?? process.env.L10N_MODEL ?? 'local';
-const BATCH = Number(get('--batch') ?? 30);
+const BATCH = Number(get('--batch') ?? 15); // 15 keeps worst-case batches within a 12k ctx
 const LIMIT = Number(get('--limit') ?? 0);
 const NO_GIT = has('--no-git');
 
@@ -90,6 +90,9 @@ async function chat(userMsg) {
     temperature: 0,
     seed: 42,
     stream: false,
+    // disable Qwen3 thinking per-request (verified against llama.cpp b11706);
+    // harmless if the server/model does not know the kwarg
+    chat_template_kwargs: { enable_thinking: false },
     ...(jsonMode ? { response_format: { type: 'json_object' } } : {}),
   });
   let res = await fetch(ENDPOINT, {
