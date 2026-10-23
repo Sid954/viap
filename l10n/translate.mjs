@@ -227,9 +227,12 @@ for (let round = 1; round <= MAX_ROUNDS && queue.length > 0; round++) {
   batchSize = Math.max(1, Math.floor(batchSize / 2)); // smaller batches, then singles
 }
 
-// leftovers → needs_review with the best attempt kept (does not block)
+// leftovers → needs_review with the best attempt kept (does not block);
+// items that never received a single model response stay untranslated so
+// they remain pending for the next run
 const needsReview = [];
 for (const it of queue) {
+  if (!attempts[it.id]) continue; // no response ever — leave for next run
   const raw = bestAttempt[it.id] ?? '';
   const r = processItem(it, raw, enById);
   results[it.id] = {

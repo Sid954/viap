@@ -18,8 +18,9 @@
     "date": "2026-10-23",
     "item": "model-server",
     "generated": false,
-    "detail": "OWNER ACTION: no local model server running (probed 8080/1234). Start llama-server (Vulkan) or LM Studio per plan §8.4 — llama-server.exe -m Qwen3-8B-Q4_K_M.gguf -ngl 99 -c 8192 --port 8080 --jinja — then run translate.bat. Needed for: Phase 3 real-model evidence + throughput, Phase 7 model bench.",
-    "blocking": false
+    "detail": "OWNER ACTION: no local model server running (probed 8080/1234). Start llama-server (Vulkan) or LM Studio per plan §8.4 — llama-server.exe -m Qwen3-8B-Q4_K_M.gguf -ngl 99 -c 8192 --port 8080 --jinja — then run translate.bat. Needed for: Phase 3 real-model evidence + throughput, Phase 7 model bench. RESOLVED 2026-10-24: server running at http://127.0.0.1:9931 (Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M); 30-entry real evidence run complete (30 ok / 2 retried / 0 needs_review, 2.0 strings/min).",
+    "blocking": false,
+    "resolved": true
   },
   {
     "added_in_phase": 2,

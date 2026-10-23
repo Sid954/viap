@@ -1,0 +1,212 @@
+{
+  "4d0b4688c787cf6c": {
+    "en": "Cancel",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.185Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "3936f6a6e6949adb": {
+    "en": "User Cancel migration",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.186Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "9277248a3ee83cf8": {
+    "en": "Detected the following program",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.186Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "20df82c095d66141": {
+    "en": "Uninstall command execution failed",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.186Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "dbc7ec2a7a0f3dc1": {
+    "en": "Still detected application exists",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.186Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "b4af90d71ac41eb3": {
+    "en": "Detected the following program is running",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "0050f0d67d0c39e8": {
+    "en": "Limited",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "006e899ac274c008": {
+    "en": "Record failed",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "00753901b5491093": {
+    "en": "GitHub Download",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "01047404efa7c036": {
+    "en": "New version found",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "012911ffcded1d78": {
+    "en": "App data must be retained",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "013896f3f28e8591": {
+    "en": "Cannot read directory link target: {0}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "0147c11dea043ceb": {
+    "en": "Cannot read current program file: {0}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "014a71d527526465": {
+    "en": "Failed to create uninstaller test directory",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:27:27.187Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "031c10557843a90b": {
+    "en": "Open Directory",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "03a283fd08a6054d": {
+    "en": "Add {0}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "042844d56f84d099": {
+    "en": ", Release {0}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "04529eda7bb9417b": {
+    "en": "Cloud Disk Download",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "04eb68209f57b50e": {
+    "en": "Delete Directly After Closing",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "04eef186a20b6af5": {
+    "en": "Target Changed (Currently Points to {0})",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "04f07b5224257403": {
+    "en": "Scanning App Data Directory Size, Mechanical Hard Drives May Take Longer",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "05518a85c0ed0174": {
+    "en": "<1>{0}</1> Apps",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "058a9d379ce1aafc": {
+    "en": "{0} Records  ·  Last Backup {1}{2}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "0816e431e19efdfb": {
+    "en": "Portable Edition Does Not Support Auto-Update. Please Manually Download v{0} to Replace Current Program, Data Directory Will Be Preserved.",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "084ab4e7c7219a21": {
+    "en": "Terminated {0} Processes",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "087783455cb94ae5": {
+    "en": "Failed to Open Directory: {0}",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "0ac72122083eeed0": {
+    "en": "Calculating Directory Size...",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "200cf1550d761ac6": {
+    "en": "Uninstall",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:31:39.111Z",
+    "needs_review": false,
+    "attempts": 1
+  },
+  "7cf0c5b6b19c8be3": {
+    "en": "Another Restore Task",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:32:33.699Z",
+    "needs_review": false,
+    "attempts": 2
+  },
+  "09dd04631a24a888": {
+    "en": "The target location already has a directory with the same name:\n{0}\n\nThis directory might be leftovers from an incomplete migration or manually created data.\nOverwriting will delete this directory and restart the migration. Continue?",
+    "model": "Aldaris/Qwen3-8B-Q4_K_M-GGUF:Q4_K_M",
+    "ts": "2026-10-23T22:32:33.699Z",
+    "needs_review": false,
+    "attempts": 2
+  }
+}
