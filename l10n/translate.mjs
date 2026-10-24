@@ -110,20 +110,26 @@ async function chat(userMsg) {
     chat_template_kwargs: { enable_thinking: false },
     ...(jsonMode ? { response_format: { type: 'json_object' } } : {}),
   });
-  let res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(mkBody(true)),
-    signal: AbortSignal.timeout(300000),
-  });
-  if (!res.ok && res.status === 400) {
-    // server may not support response_format — retry without it
-    res = await fetch(ENDPOINT, {
+  const headers = {
+    'content-type': 'application/json',
+    ...(process.env.L10N_TOKEN ? { authorization: `Bearer ${process.env.L10N_TOKEN}` } : {}),
+  };
+  const doFetch = (body) =>
+    fetch(ENDPOINT, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(mkBody(false)),
+      headers,
+      body: JSON.stringify(body),
       signal: AbortSignal.timeout(300000),
     });
+  let res = await doFetch(mkBody(true));
+  if (!res.ok && res.status === 400) {
+    // server may not support response_format — retry without it
+    res = await doFetch(mkBody(false));
+  }
+  if (res.status === 429) {
+    // rate limit (e.g. GitHub Models free tier) — back off and retry once
+    await new Promise((r) => setTimeout(r, 30000));
+    res = await doFetch(mkBody(true));
   }
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();

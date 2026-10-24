@@ -1,0 +1,318 @@
+name: release-en
+
+# English build + release (plan §Phase 5), adapted from upstream release.yml:
+# checks out upstream at the tag, applies translations + fork patches, runs
+# gates (tsc, cargo test, strict residue, fixtures), then builds/releases with
+# the exact upstream asset layout. dry-run=true runs everything except
+# publishing and attaches the built installer as a workflow artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Upstream tag to build, e.g. v1.3.2'
+        required: true
+      dry-run:
+        description: 'Run gates + build, skip publishing'
+        type: boolean
+        default: true
+      prerelease:
+        description: 'Publish as pre-release'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: release-en-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - name: Checkout fork (tooling + data)
+        uses: actions/checkout@v4
+
+      - name: Checkout upstream at tag
+        uses: actions/checkout@v4
+        with:
+          repository: Chunyu33/viap
+          ref: ${{ inputs.tag }}
+          path: upstream
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './upstream/src-tauri -> target'
+
+      - name: Install deps (tooling + upstream)
+        run: |
+          npm --prefix l10n ci
+          npm --prefix upstream ci
+
+      - name: Build rust rewriter
+        run: cargo build --release --manifest-path l10n/rust-tool/Cargo.toml
+
+      - name: Resolve updater pubkey
+        id: pubkey
+        shell: pwsh
+        run: |
+          if (Test-Path l10n/data/pubkey.txt) {
+            "file=$(Resolve-Path l10n/data/pubkey.txt)" >> $env:GITHUB_OUTPUT
+            Write-Output "using fork pubkey (l10n/data/pubkey.txt)"
+          } elseif ('${{ inputs.dry-run }}' -eq 'true') {
+            npx --prefix upstream tauri signer generate -w $env:RUNNER_TEMP/smoke.key --password "" --ci | Out-Null
+            "file=$env:RUNNER_TEMP/smoke.key.pub" >> $env:GITHUB_OUTPUT
+            Write-Output "DRY-RUN: using ephemeral throwaway key"
+          } else {
+            throw 'Real release requires l10n/data/pubkey.txt (fork updater public key, plan §8.2)'
+          }
+
+      - name: Extract corpus
+        run: node l10n/extract.mjs --src upstream --out corpus.json
+
+      - name: Apply translations + fork patches
+        run: |
+          node l10n/apply.mjs --src upstream --tm l10n/data
+          node l10n/patch-fork.mjs --src upstream --pubkey-file "${{ steps.pubkey.outputs.file }}"
+
+      - name: Gate - TypeScript
+        run: npx tsc --noEmit
+        working-directory: upstream
+
+      - name: Gate - fixture suite
+        run: node tests/run.mjs
+        working-directory: l10n
+
+      - name: Gate - frontend build (needed for cargo tests)
+        run: npm run build
+        working-directory: upstream
+
+      - name: Gate - cargo test (must match upstream baseline)
+        run: cargo test --manifest-path upstream/src-tauri/Cargo.toml
+
+      - name: Gate - residue scan (strict)
+        run: node l10n/residue.mjs --src upstream --corpus corpus.json --tm l10n/data --strict
+
+      - name: Extract release notes (English CHANGELOG.md)
+        id: notes
+        shell: pwsh
+        run: |
+          $version = (Get-Content 'upstream/package.json' -Raw -Encoding UTF8 | ConvertFrom-Json).version
+          $lines = @(Get-Content 'upstream/CHANGELOG.md' -Encoding UTF8)
+          $start = -1
+          for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match "^##\s+v?$([regex]::Escape($version))\s*$") { $start = $i; break }
+          }
+          if ($start -lt 0) { throw "CHANGELOG.md has no section for v$version" }
+          $end = $lines.Count
+          for ($i = $start + 1; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match '^##\s') { $end = $i; break }
+          }
+          $notes = ($lines[($start + 1)..($end - 1)] -join "`n").Trim()
+          if ([string]::IsNullOrWhiteSpace($notes)) { throw "CHANGELOG.md section for v$version is empty" }
+          $notes += "`n`n---`nUnofficial English build of Chunyu33/viap. UI translated automatically (local model + curated overrides). Report translation issues here; app bugs belong upstream."
+          $delimiter = "EOF_$([guid]::NewGuid().ToString('N'))"
+          "body<<$delimiter`n$notes`n$delimiter" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Build installer (dry-run)
+        if: ${{ inputs.dry-run }}
+        run: npm run tauri build -- --target x86_64-pc-windows-msvc
+        working-directory: upstream
+
+      - name: Attach installer artifact (dry-run)
+        if: ${{ inputs.dry-run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: viap-en-${{ inputs.tag }}-dryrun
+          path: upstream/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
+          if-no-files-found: error
+
+      - name: Build and release
+        if: ${{ !inputs.dry-run }}
+        uses: tauri-apps/tauri-action@v0.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: upstream
+          tagName: ${{ inputs.tag }}
+          releaseName: ${{ inputs.tag }}
+          releaseBody: ${{ steps.notes.outputs.body }}
+          prerelease: ${{ inputs.prerelease }}
+          args: '--target x86_64-pc-windows-msvc'
+
+      - name: Sign standard integrity assets
+        if: ${{ !inputs.dry-run }}
+        shell: pwsh
+        working-directory: upstream
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          $tag = '${{ inputs.tag }}'
+          $exe = "viap_${tag}_x64.exe"
+          $builtExe = 'src-tauri/target/x86_64-pc-windows-msvc/release/viap.exe'
+          $builtInstaller = Get-ChildItem -Path 'src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis' -Filter '*.exe' | Select-Object -First 1
+          if (-not (Test-Path $builtExe)) { throw 'standard exe not found' }
+          if (-not $builtInstaller) { throw 'installer not found' }
+          Copy-Item $builtExe "../$exe" -Force
+          pwsh -NoProfile -File scripts/prepare-integrity-exe.ps1 -Path "../$exe"
+          foreach ($file in @("../$exe", $builtInstaller.FullName)) {
+            npm run tauri -- signer sign $file
+          }
+          Copy-Item $builtInstaller.FullName "../viap_${tag}_x64-setup.exe" -Force
+          Copy-Item "$($builtInstaller.FullName).sig" "../viap_${tag}_x64-setup.exe.sig" -Force
+
+      - name: Upload standard integrity assets
+        if: ${{ !inputs.dry-run }}
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: |
+            viap_${{ inputs.tag }}_x64.exe
+            viap_${{ inputs.tag }}_x64.exe.sig
+            viap_${{ inputs.tag }}_x64-setup.exe.sig
+
+      - name: Update last_built_tag
+        if: ${{ !inputs.dry-run }}
+        run: |
+          node l10n/state.mjs set last_built_tag "${{ inputs.tag }}"
+          git config user.name "l10n-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add l10n/data/state.json
+          git commit -m "l10n: built ${{ inputs.tag }}" || true
+          git push
+
+      - name: File issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh issue create --title "[l10n] release-en failed for ${{ inputs.tag }}" --body "Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} — nothing was published. Check the failing gate." --label l10n || gh issue comment (gh issue list --label l10n --state open --json number --jq '.[0].number') --body "release-en failed again: run ${{ github.run_id }}"
+
+  release-extras:
+    needs: release
+    if: ${{ !inputs.dry-run }}
+    runs-on: windows-latest
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+      - name: Checkout upstream at tag
+        uses: actions/checkout@v4
+        with:
+          repository: Chunyu33/viap
+          ref: ${{ inputs.tag }}
+          path: upstream
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './upstream/src-tauri -> target'
+      - name: Install deps
+        run: |
+          npm --prefix l10n ci
+          npm --prefix upstream ci
+      - name: Build rust rewriter
+        run: cargo build --release --manifest-path l10n/rust-tool/Cargo.toml
+      - name: Apply translations + patches
+        run: |
+          node l10n/apply.mjs --src upstream --tm l10n/data
+          $pub = if (Test-Path l10n/data/pubkey.txt) { (Resolve-Path l10n/data/pubkey.txt).Path } else { throw 'extras requires l10n/data/pubkey.txt' }
+          node l10n/patch-fork.mjs --src upstream --pubkey-file $pub
+        shell: pwsh
+
+      - name: Build offline WebView2 installer
+        shell: pwsh
+        working-directory: upstream
+        run: |
+          npm run tauri -- build --target x86_64-pc-windows-msvc --bundles nsis --config src-tauri/tauri.offline-webview2.conf.json --ci
+          $installer = Get-ChildItem -Path src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis -Filter '*.exe' | Select-Object -First 1
+          if (-not $installer) { throw 'offline webview2 installer not found' }
+          Copy-Item $installer.FullName "../viap_${env:RELEASE_TAG}_x64-offline-webview2-setup.exe"
+          $builtExe = 'src-tauri/target/x86_64-pc-windows-msvc/release/viap.exe'
+          if (-not (Test-Path $builtExe)) { throw 'offline exe not found' }
+          $offlineExe = "../viap_${env:RELEASE_TAG}_x64-offline-webview2.exe"
+          Copy-Item $builtExe $offlineExe -Force
+          pwsh -NoProfile -File scripts/prepare-integrity-exe.ps1 -Path $offlineExe
+
+      - name: Build portable package
+        shell: pwsh
+        working-directory: upstream
+        run: |
+          npm run tauri -- build --target x86_64-pc-windows-msvc --no-bundle --features portable --ci
+          $portableDir = Join-Path $pwd 'portable-package'
+          New-Item -ItemType Directory -Force -Path $portableDir | Out-Null
+          Copy-Item 'src-tauri/target/x86_64-pc-windows-msvc/release/viap.exe' (Join-Path $portableDir 'viap.exe')
+          @'
+          Viap portable edition
+
+          - Run viap.exe directly; no installation needed.
+          - User data is kept in the "data" folder next to the executable by default.
+          - The portable edition does not check for or install updates automatically; download the latest portable build from GitHub Releases manually.
+          - Windows 10/11 usually include WebView2; if it is missing, install Microsoft's WebView2 runtime first.
+          '@ | Set-Content -Encoding UTF8 (Join-Path $portableDir 'Portable-README.txt')
+          Compress-Archive -Path (Join-Path $portableDir '*') -DestinationPath "../viap_${env:RELEASE_TAG}_x64-portable.zip" -Force
+          $portableExe = "../viap_${env:RELEASE_TAG}_x64-portable.exe"
+          Copy-Item (Join-Path $portableDir 'viap.exe') $portableExe -Force
+
+      - name: Sign extra release assets
+        shell: pwsh
+        working-directory: upstream
+        run: |
+          $files = @(
+            "../viap_${env:RELEASE_TAG}_x64-offline-webview2-setup.exe",
+            "../viap_${env:RELEASE_TAG}_x64-offline-webview2.exe",
+            "../viap_${env:RELEASE_TAG}_x64-portable.zip",
+            "../viap_${env:RELEASE_TAG}_x64-portable.exe"
+          )
+          foreach ($file in $files) {
+            if (-not (Test-Path $file)) { throw "missing asset: $file" }
+            npm run tauri -- signer sign $file
+          }
+
+      - name: Upload extra release assets
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: |
+            viap_${{ inputs.tag }}_x64-offline-webview2-setup.exe
+            viap_${{ inputs.tag }}_x64-offline-webview2-setup.exe.sig
+            viap_${{ inputs.tag }}_x64-offline-webview2.exe
+            viap_${{ inputs.tag }}_x64-offline-webview2.exe.sig
+            viap_${{ inputs.tag }}_x64-portable.zip
+            viap_${{ inputs.tag }}_x64-portable.zip.sig
+            viap_${{ inputs.tag }}_x64-portable.exe
+            viap_${{ inputs.tag }}_x64-portable.exe.sig

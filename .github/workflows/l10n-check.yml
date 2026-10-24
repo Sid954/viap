@@ -1,0 +1,159 @@
+name: l10n-check
+
+# Daily upstream watch (plan §Phase 5): detects a new upstream release,
+# extracts + classifies, diffs against the translation memory, auto-translates
+# new strings via GitHub Models when GH_MODELS_TOKEN is configured, then
+# dispatches release-en. Fails closed: no dispatch unless everything resolves.
+
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Re-run even if the tag is already built'
+        type: boolean
+        default: false
+  push:
+    paths:
+      - 'l10n/data/translations.json'
+      - 'l10n/data/overrides.json'
+      - 'l10n/data/denylist.json'
+      - 'l10n/data/pinned.json'
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: l10n-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      UPSTREAM_REPO: Chunyu33/viap
+    steps:
+      - name: Checkout fork (tooling + data)
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './l10n/rust-tool -> target'
+
+      - name: Build rust extractor
+        run: cargo build --release --manifest-path l10n/rust-tool/Cargo.toml
+
+      - name: Install tooling deps
+        run: npm ci
+        working-directory: l10n
+
+      - name: Get upstream latest tag
+        id: upstream
+        run: |
+          TAG=$(gh api "repos/$UPSTREAM_REPO/releases/latest" --jq .tag_name)
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "upstream latest: $TAG"
+
+      - name: Early exit when nothing is new
+        if: ${{ !inputs.force && github.event_name == 'schedule' }}
+        run: |
+          LAST=$(node l10n/state.mjs get last_built_tag)
+          if [ "$LAST" = "${{ steps.upstream.outputs.tag }}" ]; then
+            echo "nothing new (last_built=$LAST)" 
+            echo "skip=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout upstream at tag
+        if: env.skip != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.UPSTREAM_REPO }}
+          ref: ${{ steps.upstream.outputs.tag }}
+          path: upstream
+
+      - name: Drift check on upstream release workflow
+        if: env.skip != 'true'
+        run: |
+          NEW_SHA=$(sha256sum upstream/.github/workflows/release.yml | cut -d' ' -f1)
+          OLD_SHA=$(node l10n/state.mjs get upstream_release_yml_sha256)
+          echo "drift_sha=$NEW_SHA" >> "$GITHUB_ENV"
+          if [ -n "$OLD_SHA" ] && [ "$OLD_SHA" != "$NEW_SHA" ]; then
+            TITLE="[l10n-drift] upstream release.yml changed — review release-en.yml"
+            BODY="Upstream \`release.yml\` at ${{ steps.upstream.outputs.tag }} has SHA-256 \`$NEW_SHA\` (was \`$OLD_SHA\`). Diff upstream's workflow against \`.github/workflows/release-en.yml\`, port changes manually, then run: \`node l10n/state.mjs set upstream_release_yml_sha256 $NEW_SHA\` and commit."
+            ISSUE=$(gh issue list --label l10n-drift --state open --json number --jq '.[0].number' || true)
+            if [ -n "$ISSUE" ]; then gh issue comment "$ISSUE" --body "$BODY"; else gh issue create --title "$TITLE" --body "$BODY" --label l10n-drift; fi
+            echo "drift=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Extract + classify + diff
+        if: env.skip != 'true'
+        run: |
+          node l10n/extract.mjs --src upstream --out corpus.json
+          node l10n/classify.mjs --corpus corpus.json --out-dir l10n/data --report l10n/reports/phase-2-table.md
+          node l10n/pending.mjs --corpus corpus.json --out l10n/data/pending.json --tag "${{ steps.upstream.outputs.tag }}"
+          COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('l10n/data/pending.json')).count)")
+          echo "pending_count=$COUNT" >> "$GITHUB_ENV"
+          echo "pending: $COUNT"
+
+      - name: Auto-translate new strings (GitHub Models)
+        if: env.skip != 'true' && env.pending_count != '0' && secrets.GH_MODELS_TOKEN != ''
+        env:
+          L10N_TOKEN: ${{ secrets.GH_MODELS_TOKEN }}
+        run: |
+          node l10n/translate.mjs \
+            --endpoint "${{ vars.GH_MODELS_ENDPOINT || 'https://models.github.ai/inference/v1/chat/completions' }}" \
+            --model "${{ vars.GH_MODELS_MODEL || 'openai/gpt-4.1-mini' }}" \
+            --pending l10n/data/pending.json \
+            --out l10n/data/translations.json \
+            --no-git
+          node l10n/pending.mjs --corpus corpus.json --out l10n/data/pending.json --tag "${{ steps.upstream.outputs.tag }}"
+          COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('l10n/data/pending.json')).count)")
+          echo "pending_count=$COUNT" >> "$GITHUB_ENV"
+          echo "pending after auto-translate: $COUNT"
+
+      - name: Update last_seen + drift hash
+        if: env.skip != 'true'
+        run: |
+          node l10n/state.mjs set last_seen_tag "${{ steps.upstream.outputs.tag }}"
+          if [ -n "$drift_sha" ]; then node l10n/state.mjs set upstream_release_yml_sha256 "$drift_sha"; fi
+
+      - name: Commit data + dispatch release
+        if: env.skip != 'true' && env.pending_count == '0'
+        run: |
+          git config user.name "l10n-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add l10n/data
+          if ! git diff --cached --quiet; then
+            git commit -m "l10n: update data for ${{ steps.upstream.outputs.tag }} (check run ${{ github.run_id }})"
+            git push
+          fi
+          gh workflow run release-en.yml --ref main -f tag="${{ steps.upstream.outputs.tag }}" -f dry-run=false -f prerelease=true
+          echo "dispatched release-en for ${{ steps.upstream.outputs.tag }}"
+
+      - name: File issue when strings remain
+        if: env.skip != 'true' && env.pending_count != '0'
+        run: |
+          BODY=$(cat <<'EOF'
+          New upstream strings are not fully translated yet.
+
+          Auto-translation is off or incomplete — set the \`GH_MODELS_TOKEN\` secret to enable it (GitHub Models free tier), or run \`translate.bat\` locally with the Llama server and push.
+          EOF
+          )
+          TITLE="[l10n] untranslated strings for ${{ steps.upstream.outputs.tag }}"
+          ISSUE=$(gh issue list --label l10n --state open --json number --jq '.[0].number' || true)
+          if [ -n "$ISSUE" ]; then gh issue comment "$ISSUE" --body "$TITLE — still outstanding (check run ${{ github.run_id }}). $BODY"; else gh issue create --title "$TITLE" --body "$TITLE. $BODY" --label l10n; fi
+          git config user.name "l10n-bot" && git config user.email "actions@users.noreply.github.com"
+          git add l10n/data && git commit -m "l10n: pending.json for ${{ steps.upstream.outputs.tag }} (${{ env.pending_count }} strings)" && git push || true
