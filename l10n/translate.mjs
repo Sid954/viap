@@ -14,6 +14,8 @@
 // flagged needs_review. temperature 0, fixed seed, JSON in/out.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { buildSystemPrompt, buildUserMessage } from './lib/prompts.mjs';
 import { sanitizePunctuation, validate, validateContainment } from './lib/validate.mjs';
 import { substitutePins } from './lib/pins.mjs';
@@ -25,10 +27,11 @@ const get = (k, d) => {
 };
 const has = (k) => args.includes(k);
 
-const ENDPOINT =
-  get('--endpoint') ?? process.env.L10N_ENDPOINT ?? 'http://127.0.0.1:8080/v1/chat/completions';
-const PENDING = get('--pending') ?? 'data/pending.json';
-const OUT = get('--out') ?? 'data/translations.json';
+// data paths resolve against the l10n dir so translate.bat works from any cwd
+const here = dirname(fileURLToPath(import.meta.url));
+const resolveIn = (p) => (p && !p.match(/^[A-Za-z]:[\\/]/) && !p.startsWith('/') ? join(here, p) : p);
+const PENDING = resolveIn(get('--pending') ?? 'data/pending.json');
+const OUT = resolveIn(get('--out') ?? 'data/translations.json');
 const MODEL_ARG = get('--model') ?? process.env.L10N_MODEL ?? null;
 const BATCH = Number(get('--batch') ?? 15); // 15 keeps worst-case batches within a 12k ctx
 const LIMIT = Number(get('--limit') ?? 0);

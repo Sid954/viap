@@ -10,7 +10,13 @@
 // (inner fragments translate first; the outer English then contains the
 // inner English by construction — plan §Phase 2 rule B).
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { applyPins } from './lib/pins.mjs';
+
+// data paths resolve against the l10n dir so the script works from any cwd
+const here = dirname(fileURLToPath(import.meta.url));
+const resolveIn = (p) => (p && !p.match(/^[A-Za-z]:[\\/]/) && !p.startsWith('/') ? join(here, p) : p);
 
 const args = process.argv.slice(2);
 const get = (k) => {
@@ -20,9 +26,10 @@ const get = (k) => {
 const has = (k) => args.includes(k);
 
 const corpusPath = get('--corpus');
-const translationsPath = get('--translations') ?? 'data/translations.json';
-const pinnedPath = get('--pinned') ?? 'data/pinned.json';
-const denylistPath = get('--denylist') ?? 'data/denylist.json';
+const translationsPath = resolveIn(get('--translations') ?? 'data/translations.json');
+const overridesPath = resolveIn(get('--overrides') ?? 'data/overrides.json');
+const pinnedPath = resolveIn(get('--pinned') ?? 'data/pinned.json');
+const denylistPath = resolveIn(get('--denylist') ?? 'data/denylist.json');
 const outPath = get('--out');
 const tag = get('--tag') ?? 'untagged';
 if (!corpusPath || !outPath) {
@@ -39,6 +46,11 @@ const translatedIds = new Set(
     .filter(([, v]) => v && typeof v === 'object' && v.en)
     .map(([id]) => id)
 );
+// hand-curated overrides are final — never send them to the model again
+if (existsSync(overridesPath)) {
+  const ov = JSON.parse(readFileSync(overridesPath, 'utf8'));
+  for (const id of Object.keys(ov)) translatedIds.add(id);
+}
 const pinned = existsSync(pinnedPath)
   ? JSON.parse(readFileSync(pinnedPath, 'utf8'))
   : { fragments: [] };
