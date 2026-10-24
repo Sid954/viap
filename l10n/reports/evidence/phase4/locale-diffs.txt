@@ -1,0 +1,16 @@
+diff --git a/src/components/AppList.tsx b/src/components/AppList.tsx
+-        cmp = a.display_name.localeCompare(b.display_name, 'zh-CN');
++        cmp = a.display_name.localeCompare(b.display_name, 'en');
+diff --git a/src/components/LinkRecoveryModal.tsx b/src/components/LinkRecoveryModal.tsx
+-  return new Date(millis).toLocaleString('zh-CN', {
++  return new Date(millis).toLocaleString('en-US', {
+diff --git a/src/pages/MigrationHistory.tsx b/src/pages/MigrationHistory.tsx
+-  return new Date(timestamp).toLocaleString('zh-CN', {
++  return new Date(timestamp).toLocaleString('en-US', {
+-        case 'name_asc': return a.app_name.localeCompare(b.app_name, 'zh-CN');
+-        case 'name_desc': return b.app_name.localeCompare(a.app_name, 'zh-CN');
++        case 'name_asc': return a.app_name.localeCompare(b.app_name, 'en');
++        case 'name_desc': return b.app_name.localeCompare(a.app_name, 'en');
+diff --git a/src/pages/Settings.tsx b/src/pages/Settings.tsx
+-                      {backupInfo.saved_at > 0 ? new Date(backupInfo.saved_at).toLocaleString('zh-CN') : '未知'}
++                    <p className="text-[11px] truncate" style={{ color: 'var(--text-tertiary)' }}>{backupInfo.history_count} Records  ·  Last Backup {' '}{backupInfo.saved_at > 0 ? new Date(backupInfo.saved_at).toLocaleString('en-US') : '未知'}</p>

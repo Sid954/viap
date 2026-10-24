@@ -1,0 +1,69 @@
+diff --git a/src-tauri/src/integrity/mod.rs b/src-tauri/src/integrity/mod.rs
+index a21ebff..b76ae7d 100644
+--- a/src-tauri/src/integrity/mod.rs
++++ b/src-tauri/src/integrity/mod.rs
+@@ -16,8 +16,8 @@ use reqwest::StatusCode;
+ use serde::Serialize;
+ 
+ // 该公钥与 tauri.conf.json 的 updater.pubkey 必须保持一致，避免完整性校验使用另一把密钥。
+-const UPDATER_PUBLIC_KEY: &str = "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxOURGMjI0MTFGMTE5NEEKUldSS0dmRVJKUEtkWVlEUjV1d3dvdVg4S2p6VUFLN1Q4enhraVVkZ01tcDU5MXpVRGEyNjN5R0UK";
+-const GITHUB_RELEASE_BASE_URL: &str = "https://github.com/Chunyu33/viap/releases/download";
++const UPDATER_PUBLIC_KEY: &str = "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdCM0E0RDg2Q0Y1OEU3N0YKUldSLzUxalBoazA2ZXlzMmxybldVWkE0VWhJdjNkMk4xOUN2Zi94dXEvUGxnVXErRzJEWnl0T1QK";
++const GITHUB_RELEASE_BASE_URL: &str = "https://github.com/Sid954/viap/releases/download";
+ 
+ /// 当前发行形态可能对应的原始 exe 资产后缀。
+ ///
+@@ -193,7 +193,7 @@ fn verify_local_file(
+     }
+ 
+     let mut file = File::open(path)
+-        .map_err(|error| LocalVerificationError::File(format!("无法读取当前程序文件: {error}")))?;
++        .map_err(|error| LocalVerificationError::File(format!("Cannot read current program file: {error}")))?;
+     let mut buffer = [0u8; 1024 * 1024];
+     loop {
+         let bytes_read = file.read(&mut buffer).map_err(|error| {
+diff --git a/src-tauri/src/portable_update.rs b/src-tauri/src/portable_update.rs
+index 76b7872..72e08ee 100644
+--- a/src-tauri/src/portable_update.rs
++++ b/src-tauri/src/portable_update.rs
+@@ -17,7 +17,7 @@ use serde::Serialize;
+ /// 超限会返回 403，届时按"无法确认"静默处理。
+ /// 注意必须与 integrity 模块指向同一个仓库，否则版本比对会失去意义。
+ const LATEST_RELEASE_API_URL: &str =
+-    "https://api.github.com/repos/Chunyu33/viap/releases/latest";
++    "https://api.github.com/repos/Sid954/viap/releases/latest";
+ 
+ /// 便携版更新检查结果，字段名以 snake_case 暴露给前端
+ #[derive(Debug, Serialize)]
+diff --git a/src-tauri/tauri.conf.json b/src-tauri/tauri.conf.json
+index 071adfa..2471063 100644
+--- a/src-tauri/tauri.conf.json
++++ b/src-tauri/tauri.conf.json
+@@ -53,9 +53,9 @@
+       "open": true
+     },
+     "updater": {
+-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxOURGMjI0MTFGMTE5NEEKUldSS0dmRVJKUEtkWVlEUjV1d3dvdVg4S2p6VUFLN1Q4enhraVVkZ01tcDU5MXpVRGEyNjN5R0UK",
++      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdCM0E0RDg2Q0Y1OEU3N0YKUldSLzUxalBoazA2ZXlzMmxybldVWkE0VWhJdjNkMk4xOUN2Zi94dXEvUGxnVXErRzJEWnl0T1QK",
+       "endpoints": [
+-        "https://github.com/Chunyu33/viap/releases/latest/download/latest.json"
++        "https://github.com/Sid954/viap/releases/latest/download/latest.json"
+       ],
+       "dialog": true,
+       "windows": {
+diff --git a/src/hooks/useUpdater.ts b/src/hooks/useUpdater.ts
+index deb3f69..7572803 100644
+--- a/src/hooks/useUpdater.ts
++++ b/src/hooks/useUpdater.ts
+@@ -7,9 +7,9 @@ import { relaunch } from '@tauri-apps/plugin-process';
+ import { invoke } from '@tauri-apps/api/core';
+ import { useState, useCallback, useEffect, useRef } from 'react';
+ 
+-export const PORTABLE_UPDATE_URL = 'https://github.com/Chunyu33/viap/releases/latest';
++export const PORTABLE_UPDATE_URL = 'https://github.com/Sid954/viap/releases/latest';
+ // 便携版不接入自动更新，额外提供固定网盘入口作为手动下载渠道。
+-export const PORTABLE_CLOUD_UPDATE_URL = 'https://pan.quark.cn/s/4761ee4ba698';
++export const PORTABLE_CLOUD_UPDATE_URL = 'https://github.com/Sid954/viap/releases/latest';
+ 
+ export type UpdateStatus =
+   | 'idle'

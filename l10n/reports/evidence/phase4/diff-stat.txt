@@ -1,0 +1,23 @@
+ src-tauri/src/app_manager/uninstaller.rs |  6 +++---
+ src-tauri/src/integrity/mod.rs           |  6 +++---
+ src-tauri/src/migration/copy_engine.rs   |  8 +++----
+ src-tauri/src/migration/links.rs         |  2 +-
+ src-tauri/src/migration/mod.rs           |  8 +++----
+ src-tauri/src/portable_update.rs         |  2 +-
+ src-tauri/src/storage/data_dir.rs        |  2 +-
+ src-tauri/src/storage/link_recovery.rs   |  2 +-
+ src-tauri/src/storage/reboot_cleanup.rs  |  8 +++----
+ src-tauri/tauri.conf.json                |  4 ++--
+ src/components/AppList.tsx               | 15 +++++--------
+ src/components/CleanupModal.tsx          |  2 +-
+ src/components/LinkRecoveryModal.tsx     |  6 +++---
+ src/components/ProjectPromoModal.tsx     |  4 ++--
+ src/components/UninstallReportModal.tsx  |  2 +-
+ src/components/UpdateNotification.tsx    | 12 ++++-------
+ src/components/WarningConfirmDialog.tsx  |  3 +--
+ src/hooks/useUpdater.ts                  |  4 ++--
+ src/pages/AppMigration.tsx               | 36 ++++++++++++++++++--------------
+ src/pages/LargeFolders.tsx               | 28 ++++++++++++++-----------
+ src/pages/MigrationHistory.tsx           | 11 +++++-----
+ src/pages/Settings.tsx                   | 11 ++++------
+ 22 files changed, 88 insertions(+), 94 deletions(-)

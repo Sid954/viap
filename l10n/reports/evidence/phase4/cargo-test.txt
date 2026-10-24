@@ -1,0 +1,100 @@
+   Compiling viap v1.3.2 (D:\sid\STUDY\Coding\viap\.l10n-work\phase4\src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 27s
+     Running unittests src\lib.rs (D:/sid/STUDY/Coding/viap/.l10n-work/upstream/src-tauri/target\debug\deps\viap_lib-76af47df6aace3a4.exe)
+
+running 80 tests
+test app_manager::detector::tests::is_named_matches_last_segment_ignoring_case ... ok
+test app_manager::detector::tests::wechat4_config_root_returns_none_without_config_dir ... ok
+test app_manager::detector::tests::wechat_data_candidate_keeps_path_that_is_already_the_data_dir ... ok
+test app_manager::detector::tests::wechat_data_candidate_resolves_parent_directory ... ok
+test app_manager::appx::tests::matches_by_windows_apps_install_location_first ... ok
+test app_manager::appx::tests::matches_by_normalized_name ... ok
+test app_manager::detector::tests::wechat_save_root_resolves_mydocument_prefix ... ok
+test app_manager::detector::tests::wechat_save_root_accepts_absolute_path ... ok
+test app_manager::appx::tests::rejects_unsafe_package_names_before_building_commands ... ok
+test app_manager::appx::tests::parses_both_array_and_single_object_json ... ok
+test app_manager::detector::tests::wechat_save_root_trims_quotes_and_newlines ... ok
+test app_manager::detector::tests::wechat_save_root_without_documents_dir_returns_none ... ok
+test app_manager::disk_scan_policy::tests::system_mount_is_not_classified_as_non_system_mount ... ok
+test app_manager::disk_scan_policy::tests::path_matching_is_case_insensitive_and_component_aware ... ok
+test app_manager::scanner::tests::test_related_stem_matching_ignores_short_names ... ok
+test app_manager::traces::tests::image_path_normalization_strips_quotes_prefix_and_arguments ... ok
+test app_manager::traces::tests::matches_by_name_token_and_ignores_unrelated_services ... ok
+test app_manager::traces::tests::matches_by_install_location_even_with_unrelated_name ... ok
+test app_manager::traces::tests::tokens_drop_generic_and_short_words ... ok
+test app_manager::uninstall_report::tests::slug_is_filesystem_safe ... ok
+test app_manager::uninstall_snapshot::tests::diff_names_ignores_case_and_classifies_three_ways ... ok
+test app_manager::uninstaller::process_tests::deleting_a_missing_registry_key_counts_as_success ... ok
+test app_manager::uninstaller::process_tests::portable_app_folder_with_windows_in_name_is_deletable ... ok
+test app_manager::uninstaller::process_tests::process_touches_directory_covers_exe_and_command_line ... ok
+test app_manager::uninstaller::process_tests::registry_delete_failures_are_classified_by_kind ... ok
+test app_manager::uninstaller::process_tests::related_process_matching_covers_both_rules ... ok
+test app_manager::uninstaller::process_tests::scan_roots_allow_data_and_program_directories ... ok
+test app_manager::uninstaller::process_tests::system_directories_stay_protected ... ok
+test app_manager::scanner::tests::test_validate_install_dir_rejects_lone_exe ... ok
+test app_manager::uninstaller::tests::accepts_common_msi_completion_codes ... ok
+test app_manager::uninstaller::tests::expands_registered_environment_variables ... ok
+test folder_manager::tests::normalize_path_ignores_case_separators_and_trailing_slash ... ok
+test folder_manager::tests::normalize_path_keeps_sibling_directories_apart ... ok
+test app_manager::scanner::tests::test_validate_install_dir_accepts_app_with_dll ... ok
+test app_manager::scanner::tests::test_keeps_multi_exe_suite_in_own_directory ... ok
+test integrity::tests::decodes_tauri_outer_base64_signature ... ok
+test integrity::tests::signature_candidates_are_ordered_and_deduplicated ... ok
+test integrity::tests::rejects_invalid_signature_content ... ok
+test integrity::tests::signature_candidates_are_raw_executables_only ... ok
+test app_manager::scanner::tests::test_rejects_exe_isolated_in_aggregate_directory ... ok
+test migration::danger_rules::tests::blocked_rules_still_win_over_warning_rules ... ok
+test migration::danger_rules::tests::blocks_drive_roots_and_system_root_children ... ok
+test app_manager::uninstaller::tests::accepts_portable_app_inside_generic_directory ... ok
+test migration::danger_rules::tests::blocks_program_files_root_but_not_installed_apps ... ok
+test migration::danger_rules::tests::blocks_user_profile_root_but_not_its_subfolders ... ok
+test migration::danger_rules::tests::normal_data_folders_are_not_flagged ... ok
+test app_manager::uninstall_snapshot::tests::top_level_listing_skips_volatile_directories ... ok
+test portable_update::tests::compares_versions_numerically_not_lexically ... ok
+test portable_update::tests::strips_v_prefix_and_build_suffix ... ok
+test app_manager::uninstaller::process_tests::directory_fingerprint_changes_when_content_changes ... ok
+test portable_update::tests::treats_equal_or_unparsable_versions_as_no_update ... ok
+test app_manager::detector::tests::wechat4_config_root_treats_blank_ini_as_missing ... ok
+test app_manager::detector::tests::wechat4_config_root_reads_save_path_from_ini ... ok
+test migration::tests::detects_source_that_is_already_a_link ... ok
+test storage::link_recovery::tests::path_within_root_matches_only_real_children ... ok
+test storage::link_recovery::tests::import_rejects_plain_directory ... ok
+test storage::link_recovery::tests::same_path_ignores_case_and_trailing_separator ... ok
+test storage::link_recovery::tests::system_compat_names_are_filtered_but_app_names_are_kept ... ok
+test migration::cleanup::tests::contents_removal_handles_directory_links ... ok
+test storage::data_dir::tests::cleanup_removes_only_managed_entries ... ok
+test app_manager::uninstall_report::tests::saved_report_round_trips_with_all_fields ... ok
+test storage::data_dir::tests::unrelated_cache_directory_is_not_treated_as_managed ... ok
+test storage::reboot_cleanup::tests::empty_storage_produces_no_notice ... ok
+test migration::copy_engine::tests::copy_file_ex_w_supports_paths_longer_than_max_path ... ok
+test storage::link_recovery::tests::junction_is_excluded_inside_profile_and_reported_outside ... ok
+test storage::user_settings::tests::settings_use_camel_case_json_for_frontend_ipc ... ok
+test storage::user_settings::tests::normalized_settings_reject_invalid_theme_and_font_size ... ok
+test storage::user_settings::tests::window_size_fields_are_optional_and_round_trip ... ok
+test app_manager::uninstall_snapshot::tests::snapshot_captures_install_dir_and_diff_detects_removal ... ok
+test utils::tests::available_space_lookup_matches_volume_boundaries ... ok
+test utils::tests::extended_length_path_covers_drive_unc_and_fallbacks ... ok
+test storage::mirror::tests::removes_only_the_requested_record_from_the_backup ... ok
+test storage::pending_migration::tests::reports_missing_backup_without_deleting_anything ... ok
+test storage::pending_migration::tests::keeps_everything_when_source_still_exists ... ok
+test storage::pending_migration::tests::restores_backup_when_source_disappeared ... ok
+test storage::data_dir::tests::recursive_copy_preserves_managed_files_without_copying_temp_files ... ok
+test storage::reboot_cleanup::tests::verification_splits_removed_and_still_present ... ok
+test migration::copy_engine::engine_tests::copies_tree_and_recreates_nested_directory_links ... ok
+test storage::reboot_cleanup::tests::records_entries_without_duplicates_and_caps_the_list ... ok
+test app_manager::uninstall_report::tests::prune_keeps_only_the_newest_reports ... ok
+
+test result: ok. 80 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running unittests src\main.rs (D:/sid/STUDY/Coding/viap/.l10n-work/upstream/src-tauri/target\debug\deps\viap-66a8b078d7231008.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests viap_lib
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
