@@ -146,7 +146,191 @@ for (const file of localeFiles) {
   f.write(text);
 }
 
-// 6. Settings/donate/promo links: intentionally untouched (credit stays).
+// 6/7. Fork identity: About section + FeedbackModal (owner spec, credit
+// preserved as an explicit "Original project" row; LICENSE untouched — MIT).
+// All anchors are ASCII (URLs/identifiers) so they survive translation.
+// Idempotent; balanced-JSX block removal; cleans dangling state/props/icons
+// (tsconfig has noUnusedLocals/noUnusedParameters).
+{
+  const p = join(src, 'src/pages/Settings.tsx');
+  let s = readFileSync(p, 'utf8');
+  const before = s;
+
+  const swapOnce = (oldStr, newStr, label) => {
+    const nOld = s.split(oldStr).length - 1;
+    if (nOld === 1) {
+      s = s.replace(oldStr, newStr);
+      edits.push(`Settings: ${label}`);
+    } else if (nOld === 0) {
+      edits.push(`Settings: ${label} (already)`);
+    } else {
+      console.error(`FAIL Settings ${label}: anchor count ${nOld}`);
+      process.exit(1);
+    }
+  };
+
+  // remove the balanced JSX block whose ROOT open tag is `rootTag` and which
+  // contains `token`; includes the {/* comment */} line above the root
+  const removeBlock = (token, rootTag, label) => {
+    const ti = s.indexOf(token);
+    if (ti === -1) {
+      edits.push(`Settings: ${label} (already removed)`);
+      return;
+    }
+    const start = s.lastIndexOf(rootTag, ti);
+    if (start === -1 || ti - start > 3000) {
+      console.error(`FAIL Settings ${label}: root ${rootTag} not found before anchor`);
+      process.exit(1);
+    }
+    const tagRe = /<\/?([A-Za-z][\w.]*)[^>]*?(\/?)>/g;
+    tagRe.lastIndex = start;
+    let depth = 0;
+    let end = -1;
+    let m;
+    while ((m = tagRe.exec(s))) {
+      if (m[2] === '/') continue; // self-closing
+      if (m[0].startsWith('</')) {
+        depth -= 1;
+        if (depth === 0) {
+          end = tagRe.lastIndex;
+          break;
+        }
+      } else {
+        depth += 1;
+      }
+    }
+    if (end === -1) {
+      console.error(`FAIL Settings ${label}: unbalanced block`);
+      process.exit(1);
+    }
+    // extend to end of line
+    const eol = s.indexOf('\n', end);
+    end = eol === -1 ? s.length : eol;
+    // include the comment line above, if any
+    let lineStart = s.lastIndexOf('\n', start) + 1;
+    let cutStart = start;
+    const lineAboveEnd = lineStart - 1;
+    const lineAboveStart = s.lastIndexOf('\n', lineAboveEnd - 1) + 1;
+    const lineAbove = s.slice(lineAboveStart, lineAboveEnd);
+    if (/^\s*\{\/\//.test(lineAbove)) cutStart = lineAboveStart;
+    s = s.slice(0, cutStart) + s.slice(end + 1); // also swallow one \n
+    edits.push(`Settings: ${label}`);
+  };
+
+  const removeLineContaining = (needle, label) => {
+    const lines = s.split('\n');
+    const kept = lines.filter((l) => !l.includes(needle));
+    if (kept.length === lines.length) {
+      edits.push(`Settings: ${label} (already)`);
+      return;
+    }
+    s = kept.join('\n');
+    edits.push(`Settings: ${label}`);
+  };
+
+  // 7.1 website row → fork repo
+  swapOnce('https://viap.evan666.cc/', `https://github.com/${OWNER}/${REPO}`, 'website → fork repo');
+  // 7.2 GitHub row → fork repo + label
+  // (gate on the label: the credits row inserted below re-uses the plain
+  // upstream URL, so on a re-run the URL anchor alone is ambiguous)
+  if (s.includes(`>${OWNER}</span>`)) {
+    edits.push('Settings: github row → fork (already)');
+  } else {
+    swapOnce(`"https://github.com/Chunyu33/viap"`, `"https://github.com/${OWNER}/${REPO}"`, 'github row → fork');
+    swapOnce('>Chunyu33</span>', `>${OWNER}</span>`, 'github label → Sid954');
+  }
+  // 7.3 changelog row → fork
+  swapOnce(
+    'https://github.com/Chunyu33/viap/blob/main/CHANGELOG.md',
+    `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`,
+    'changelog → fork'
+  );
+  // 7.4 credits row after the changelog row
+  if (s.includes('Original project')) {
+    edits.push('Settings: credits row (already)');
+  } else {
+    const anchor = `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`;
+    const ai = s.indexOf(anchor);
+    const closeA = s.indexOf('</a>', ai);
+    if (ai === -1 || closeA === -1) {
+      console.error('FAIL Settings: changelog anchor for credits row not found');
+      process.exit(1);
+    }
+    const insertAt = closeA + 4;
+    const creditsRow = [
+      '',
+      '            {/* original project credit */}',
+      `            <a href="https://github.com/Chunyu33/viap" target="_blank" rel="noopener noreferrer"`,
+      '              className="setting-item no-underline"',
+      `              style={{ padding: '10px 14px', borderBottom: '1px solid var(--border-color)', cursor: 'pointer' }}>`,
+      '              <div className="flex items-center gap-3">',
+      `                <div className="w-8 h-8 rounded flex items-center justify-center" style={{ background: 'var(--bg-row-hover)' }}>`,
+      `                  <Users className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />`,
+      '                </div>',
+      `                <span className="text-[12px]" style={{ color: 'var(--text-primary)' }}>Original project</span>`,
+      '              </div>',
+      '              <div className="flex items-center gap-1.5">',
+      `                <span className="text-[12px]" style={{ color: 'var(--text-tertiary)' }}>Chunyu33 (Evan Lau)</span>`,
+      `                <ExternalLink className="w-3 h-3" style={{ color: 'var(--text-tertiary)' }} />`,
+      '              </div>',
+      '            </a>',
+    ].join('\n');
+    s = s.slice(0, insertAt) + creditsRow + s.slice(insertAt);
+    edits.push('Settings: credits row inserted (Chunyu33 / Evan Lau)');
+  }
+  // 7.5-7.8 row removals (root tags are the row containers, not inner buttons)
+  removeBlock(`'bilibili'`, '<div className="setting-item"', 'removed B站/抖音 row');
+  removeBlock(`, 'qq')`, '<div className="setting-item"', 'removed QQ group row');
+  removeBlock('setPromoModalOpen(true)', '<button', 'removed promo row');
+  removeBlock('setDonateModalOpen(true)', '<button', 'removed support-author row');
+  // 7.9 modal renders
+  removeLineContaining('<ProjectPromoModal ', 'removed ProjectPromoModal render');
+  removeLineContaining('<DonateModal ', 'removed DonateModal render');
+  // 7.10 imports
+  removeLineContaining("import DonateModal from '../components/DonateModal';", 'removed DonateModal import');
+  removeLineContaining("import ProjectPromoModal from '../components/ProjectPromoModal';", 'removed ProjectPromoModal import');
+  // 7.11 dangling state
+  removeLineContaining('[promoModalOpen, setPromoModalOpen]', 'removed promo state');
+  removeLineContaining('[donateModalOpen, setDonateModalOpen]', 'removed donate state');
+
+  // 7.12 strip icons that are no longer used anywhere in the file (rewrite
+  // the possibly multi-line lucide-react import statement cleanly)
+  {
+    const strip = ['Video', 'Rocket', 'Heart'].filter(
+      (icon) => (s.split(new RegExp(`\\b${icon}\\b`)).length - 1) === 1 // only the import remains
+    );
+    if (strip.length) {
+      const importRe = /import\s*\{([^}]*)\}\s*from\s*'lucide-react';/;
+      s = s.replace(importRe, (whole, names) => {
+        const kept = names.split(',').map((n) => n.trim()).filter((n) => n && !strip.includes(n));
+        return `import { ${kept.join(', ')} } from 'lucide-react';`;
+      });
+      edits.push(`Settings: stripped unused icons ${strip.join(', ')}`);
+    }
+  }
+
+  // 7.13 FeedbackModal — issues URL to fork
+  swapOnce(
+    "'https://github.com/Chunyu33/viap/issues'",
+    `'https://github.com/${OWNER}/${REPO}/issues'`,
+    'ISSUES_URL → fork'
+  );
+  removeBlock(`onCopy(email, 'email')`, '<div style={rowStyle}', 'removed feedback email row');
+  removeBlock('feedback-qq', '<div style={{', 'removed feedback QQ row');
+  removeLineContaining("const QQ_GROUP = '834582563';", 'removed QQ_GROUP const');
+  // valueStyle only served the removed email/QQ rows
+  s = s.replace(/const valueStyle: React\.CSSProperties = \{[^}]*\};\n?/, '');
+  edits.push('Settings: removed unused valueStyle');
+  // email prop: type line, destructure, call site
+  removeLineContaining('  email: string;', 'removed email prop type');
+  s = s.replace(
+    'function FeedbackModal({ isOpen, onClose, email, copiedLabel, onCopy }: {',
+    'function FeedbackModal({ isOpen, onClose, copiedLabel, onCopy }: {'
+  );
+  s = s.replace(/\s*email=\{APP_INFO\.email\}/, '');
+
+  if (s !== before) writeFileSync(p, s, 'utf8');
+}
 
 // final sweep — no 'zh-CN' may remain anywhere in frontend sources
 const { execFileSync } = await import('node:child_process');

@@ -1,112 +1,61 @@
-# Viap
+# Viap — English Edition (unofficial fork)
 
-[简体中文](README.zh-CN.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 <p align="center">
   <img src="src-tauri/icons/icon.png" width="128" height="128" alt="Viap logo">
 </p>
 
-<p align="center"><strong>Windows application and data migration tool</strong></p>
-<p align="center">Move applications and selected data to another drive while keeping their original paths available.</p>
+This is the **unofficial English edition** of [Viap](https://github.com/Chunyu33/viap), a Windows
+app-management and storage-redirection tool by **Chunyu33 (Evan Lau)**. It moves installed
+applications and large data folders off the system drive using NTFS directory junctions /
+symbolic links, leaving a redirect point at the original path so everything keeps working.
 
-Viap is a Windows desktop application built with Tauri, React, TypeScript, and Rust. It uses NTFS directory junctions or symbolic links to redirect storage without changing application paths.
+The app's behavior is unchanged from upstream — only the UI language is English.
 
-## Features
+## How this fork works
 
-- Migrate installed applications to another local drive and restore them later.
-- Migrate system folders, selected application data folders, and custom folders.
-- Check running processes and file locks before migration or restore.
-- Verify copied data before switching the original path to a junction or link.
-- Keep migration history with restore, link health checks, import, and export.
-- Mirror migration data to a separate folder and rebuild lost history by scanning directory junctions.
-- Uninstall applications and scan or clean related leftovers, with running-process handling, a before/after comparison report and matching services, drivers or scheduled tasks.
-- Show disk usage, application snapshots, lazy-loaded icons, and background scan progress.
-- Detect HDD cold-start cases and let users manually load slow application-data directories.
-- Support light and dark themes, an optional liquid-glass appearance, font-size settings, portable mode, and WebView2 offline installers.
-- Verify the running executable against the official GitHub Release signature.
+Everything lives in [`l10n/`](l10n/SPEC.md); no upstream source is modified in this repository:
 
-## Safety Notes
+| Stage | Tool | What it does |
+|---|---|---|
+| Extract | `l10n/ts-tool` + `l10n/rust-tool` | parse TS/Rust sources into a corpus of CJK UI strings (placeholders, JSX groups, format strings preserved) |
+| Classify | `l10n/classify.mjs` | logic-dependent literals: exact-match keys, pinned fragments for runtime `.includes()` checks, denylist for OS-text comparisons |
+| Translate | `l10n/translate.mjs` / `translate.bat` | local model (llama.cpp / any OpenAI-compatible endpoint) or CI (GitHub Models); validated per string |
+| Verify | `l10n/tests/suite.mjs` | 7 invariant families + sabotage fixtures — placeholders, pinned flows, denylist, idempotency, scope creep |
+| Build | `.github/workflows/release-en.yml` | gated build + release on a pristine upstream checkout: `tsc`, the 80-test Rust suite, strict residue scan, then the upstream release pipeline |
 
-Viap is designed to keep a usable data copy until the migration switch has been verified. However, no file operation is completely safe against hardware failure or unexpected power loss. Back up important data before migrating.
+Upstream releases are detected daily by `l10n-check.yml`; new strings are auto-translated in CI,
+and a release is published **only** when every gate passes.
 
-- Run Viap with administrator privileges when Windows requires permission to create links or access protected folders.
-- Close the application being migrated. Viap performs process and lock checks, but some software may use services, drivers, or memory-mapped files.
-- Do not migrate the entire `AppData`, `Local`, or `Roaming` directory. Select data folders for one application at a time.
-- Software with license binding, system services, kernel drivers, self-repair, or hard-coded paths may not work correctly after redirection.
-- Do not manually delete the target directory while a migration record is active. Restore the application first when possible.
-- Microsoft Store, UWP, MSIX, system components, browser installations, and GPU drivers should be handled by Windows or their vendor tools instead.
-- Use local NTFS drives. Network drives and unsupported file systems are not migration targets.
+## Downloads
 
-## Portable and Installer Builds
+Grab installers (NSIS, offline WebView2, portable) from this fork's
+[Releases](https://github.com/Sid954/viap/releases). Builds are unsigned — expect a SmartScreen
+prompt ("More info → Run anyway").
 
-- **Standard installer**: installed application with update support.
-- **WebView2 offline installer**: includes the WebView2 runtime for systems that cannot download it during installation.
-- **Portable ZIP**: extract and run without installation. User data is stored beside the application in `data`; portable builds cannot update themselves, but they do check for new versions and will point you to a manual download from [GitHub Releases](https://github.com/Chunyu33/viap/releases) or [Quark Drive](https://pan.quark.cn/s/4761ee4ba698).
-
-On first launch, the portable build can copy missing data from an existing Viap installation. Existing installation data is not deleted.
-
-## Data and Settings
-
-- Installed builds normally use `%APPDATA%\viap`.
-- Portable builds normally use the application directory's `data` folder.
-- The Settings page can change Viap's data directory and copies managed data before switching to the new location.
-- Themes, the liquid-glass appearance, font size, default migration paths, recycle-bin preference, and scan settings are persisted with the user data.
-
-## Integrity Verification
-
-Open Settings and choose **Verify file integrity**. Viap downloads the signature for the current release from GitHub and verifies the running executable with the official public key.
-
-- A success message is shown only when the signature and file content match exactly.
-- A signature mismatch indicates that the file may have been modified.
-- Network failures, missing signatures, and malformed signatures are reported separately and are not treated as tampering.
-
-## Development
-
-### Requirements
-
-- Windows 10 or later
-- Node.js 18 or later
-- Rust and the Tauri prerequisites
-
-### Install and Run
+## Building locally
 
 ```bash
-npm install
-npm run tauri dev
+git clone https://github.com/Sid954/viap
+cd viap
+git clone --depth 1 --branch v1.3.2 https://github.com/Chunyu33/viap .l10n-work/upstream
+cd l10n && npm ci && (cd rust-tool && cargo build --release)
+node apply.mjs --src ../.l10n-work/upstream --tm data
+node patch-fork.mjs --src ../.l10n-work/upstream --pubkey-file <your .pub>
+cd ../.l10n-work/upstream && npm ci && npm run tauri build
 ```
 
-### Build and Verify
+Requirements: Node ≥ 18, Rust (MSVC), VS Build Tools.
 
-```bash
-npm run build
-cargo check --manifest-path src-tauri/Cargo.toml --no-default-features
-git diff --check
-```
+## Credits
 
-### Generate Icons
+- **Original project:** [Chunyu33 (Evan Lau)](https://github.com/Chunyu33/viap) — everything that
+  makes Viap work is upstream work. 中文原版请访问上游仓库。
+- English localization pipeline built for this fork under the same MIT license (see [LICENSE](LICENSE)).
 
-The icon source is `src-tauri/icons/icon.svg`. The scripts generate the PNG sizes used by the application, including `48x48.png`, and add 32, 48, 128, and 256 pixel layers to `icon.ico`.
+## Disclaimer
 
-```bash
-node scripts/generate-icons.js
-node scripts/generate-ico.js
-```
-
-## Reporting Issues
-
-Please search existing issues first, then describe one problem per issue with a clear, factual title. Following the core principles of [How To Ask Questions The Smart Way](https://www.catb.org/esr/faqs/smart-questions.html) helps issues get understood and resolved faster:
-
-- **Bug reports** must include the exact reproduction steps, expected and actual behavior, Viap version, Windows version, selected interface language, and relevant logs or screenshots.
-- Include the smallest reproducible example when possible. Redact personal paths, usernames, tokens, and other sensitive information before posting logs or screenshots.
-- **Feature requests** should explain the problem and intended outcome, rather than only demanding a specific implementation.
-- Keep the discussion concise, respectful, and open to clarification. Please avoid assumptions, insults, or orders; a clear report with useful context is far more effective.
-- Low-quality issues (e.g., arrogant questions, pure complaints, no context, no reproduction steps) will not be processed.
-
-
-## License
-
-MIT License. See [LICENSE](LICENSE).
-
-## Contributing
-
-Issues and pull requests are welcome. When reporting a migration or scan problem, include the application name, source and target drive types, and the visible error message. Do not include private paths or personal data.
+This is an unofficial community build, not affiliated with or endorsed by the original author.
+Translation issues belong in this fork's [issues](https://github.com/Sid954/viap/issues);
+application bugs belong upstream.

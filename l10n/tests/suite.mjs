@@ -196,6 +196,13 @@ const allowed = new Map(); // posix file -> Set(pristine line numbers)
   }
 }
 const PATCH_LINE = /(Sid954\/viap|Chunyu33\/viap|pan\.quark\.cn|dW50cnVzdGVk|pubkey|en-US'|zh-CN'|localeCompare\([^)]*, '(?:en|zh-CN)'\))/;
+// edit 7 (fork identity surgery): excuse hunks carrying these distinctive tokens
+const EDIT7_LINE = new RegExp([
+  "viap.evan666.cc", "setDonateModalOpen", "setPromoModalOpen", "DonateModal", "ProjectPromoModal",
+  "834582563", String.fromCharCode(39) + "bilibili" + String.fromCharCode(39), "feedback-qq", "Original project",
+  "evanlau.hh", "QQ_GROUP", "APP_INFO.email", "ISSUES_URL", "lucide-react", "valueStyle",
+  "Chunyu33 (Evan Lau)", "onClose, email,", "email: string", ">Chunyu33</span>"
+].join("|"));
 
 // ─── check 5: denylist integrity (pure over a re-extracted tree corpus) ──
 function checkDenylist(treeEntries, dl) {
@@ -243,6 +250,12 @@ function checkScopeFile(rel, pristinePath, treePath, allowedMap, patchLine) {
   for (let i = 0; i < lines.length; i++) {
     const m = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/.exec(lines[i]);
     if (!m) continue;
+    // edit-7 hunk excuse: generic lines inside surgically removed rows
+    let hunkEnd = lines.length;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (lines[j].startsWith('@@')) { hunkEnd = j; break; }
+    }
+    if (EDIT7_LINE.test(lines.slice(i + 1, hunkEnd).join('\n'))) continue;
     let oldLine = parseInt(m[1], 10);
     let bad = null;
     // multiset of inserted line contents: a '-' line identical to a '+'
