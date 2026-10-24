@@ -193,11 +193,34 @@ let translated = 0;
 let retriedIds = new Set();
 let batchSize = Math.max(1, Math.min(BATCH, 40));
 const MAX_ROUNDS = 3;
+const TOTAL = items.length;
+
+console.log(
+  `translating ${TOTAL} strings in batches of ~${batchSize} (each batch takes 1–3 min; progress prints after every batch; Ctrl+C is safe — results are saved after each batch)`
+);
+
+function progressLine(failedCount) {
+  const min = (Date.now() - t0) / 60000;
+  const rate = translated / Math.max(min, 1e-9);
+  const remaining = TOTAL - translated;
+  const eta = rate > 0 ? (remaining / rate).toFixed(0) : '—';
+  return `[${String(translated).padStart(String(TOTAL).length, ' ')}/${TOTAL}] ${rate.toFixed(1)}/min | ${min.toFixed(1)} min elapsed | ETA ~${eta} min${failedCount ? ` | ${failedCount} to retry` : ''}`;
+}
+
+// incremental checkpoint: merge current results into OUT after every batch
+function checkpoint() {
+  const prevOut = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
+  writeFileSync(OUT, JSON.stringify({ ...prevOut, ...results }, null, 2) + '\n', 'utf8');
+}
 
 for (let round = 1; round <= MAX_ROUNDS && queue.length > 0; round++) {
   const failed = [];
   for (let i = 0; i < queue.length; i += batchSize) {
     const chunk = queue.slice(i, i + batchSize);
+    if (round === 1) {
+      const preview = chunk[0].pinned_source.slice(0, 30).replace(/\n/g, ' ');
+      console.log(`batch ${Math.floor(i / batchSize) + 1}: ${chunk.length} strings, starting "${preview}…"`);
+    }
     let modelMap;
     try {
       const content = await chat(buildUserMessage(chunk.map((it) => ({
@@ -212,6 +235,7 @@ for (let round = 1; round <= MAX_ROUNDS && queue.length > 0; round++) {
       failed.push(...chunk);
       continue;
     }
+    let chunkOk = 0;
     for (const it of chunk) {
       attempts[it.id] = (attempts[it.id] ?? 0) + 1;
       if (attempts[it.id] > 1) retriedIds.add(it.id);
@@ -233,6 +257,7 @@ for (let round = 1; round <= MAX_ROUNDS && queue.length > 0; round++) {
         };
         enById[it.id] = r.final;
         translated += 1;
+        chunkOk += 1;
       } else {
         console.warn(
           `invalid (${it.id}, attempt ${attempts[it.id]}): ${[...r.errs, ...r.finalErrs].join('; ').slice(0, 160)}`
@@ -240,8 +265,13 @@ for (let round = 1; round <= MAX_ROUNDS && queue.length > 0; round++) {
         failed.push(it);
       }
     }
+    if (round === 1) {
+      console.log(`  ${chunkOk}/${chunk.length} valid | ${progressLine(failed.length)}`);
+      checkpoint();
+    }
   }
   queue = failed;
+  if (queue.length > 0 && round < MAX_ROUNDS) console.log(`retry round ${round + 1}: ${queue.length} strings, batch size ${Math.max(1, Math.floor(batchSize / 2))}`);
   batchSize = Math.max(1, Math.floor(batchSize / 2)); // smaller batches, then singles
 }
 
