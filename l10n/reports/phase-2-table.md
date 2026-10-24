@@ -1,6 +1,6 @@
-# Phase 2 classification — 2026-10-23
+# Phase 2 classification — 2026-10-24
 
-Entry classes: {"U":1292,"B":7,"A":7} (A+B = exact-match and substring both)
+Entry classes: {"U":1298,"B":7,"A":7} (A+B = exact-match and substring both)
 
 ## A / B / C occurrence table (logic sites only)
 

@@ -360,6 +360,9 @@ class Extractor {
   }
 
   groupEntry(el) {
+    // the group element's OWN attributes are separate entries (their spans
+    // sit inside the open-tag slice the rewrite re-emits)
+    this.visitAttributes(el);
     const start = ts.isJsxFragment(el)
       ? el.openingFragment.end
       : el.openingElement.end;
@@ -393,11 +396,12 @@ class Extractor {
           ts.isJsxSelfClosingElement(c)
         ) {
           tagN += 1;
+          const myN = tagN; // recursion bumps tagN; close with OUR number
           if (ts.isJsxSelfClosingElement(c)) {
-            tagSpans[tagN] = {
+            tagSpans[myN] = {
               selfClosing: [c.getStart(this.sf), c.end],
             };
-            parts.push(`<${tagN}/>`);
+            parts.push(`<${myN}/>`);
           } else {
             const open = ts.isJsxFragment(c)
               ? [c.openingFragment.getStart(this.sf), c.openingFragment.end]
@@ -405,10 +409,10 @@ class Extractor {
             const close = ts.isJsxFragment(c)
               ? [c.closingFragment.getStart(this.sf), c.closingFragment.end]
               : [c.closingElement.getStart(this.sf), c.closingElement.end];
-            tagSpans[tagN] = { open, close };
-            parts.push(`<${tagN}>`);
+            tagSpans[myN] = { open, close };
+            parts.push(`<${myN}>`);
             renderChildren(c.children, open[1]);
-            parts.push(`</${tagN}>`);
+            parts.push(`</${myN}>`);
           }
         }
         prevEnd = c.end;
@@ -548,9 +552,13 @@ export function applyEditsWith(text, edits, buildReplacement) {
 
 function buildReplacement(text, edit, renderSpan) {
   const { kind, translated, entry, data } = edit;
-  if (kind === 'string' || kind === 'jsx-attr') {
+  if (kind === 'string') {
     const q = text[edit.start] === "'" ? "'" : '"';
     return q + escapeJsString(translated, q) + q;
+  }
+  if (kind === 'jsx-attr') {
+    // JSX attribute strings have NO backslash escapes — use entities
+    return '"' + translated.replace(/"/g, '&quot;').replace(/\n/g, '&#10;') + '"';
   }
   if (kind === 'jsx-text') {
     return escapeJsxTextOut(translated);

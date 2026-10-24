@@ -1,0 +1,3400 @@
+{
+  "tag": "v1.3.2",
+  "generated": "2026-10-24T11:59:41.893Z",
+  "count": 244,
+  "entries": [
+    {
+      "id": "05a106ee73daa4df",
+      "source": "应当提示用户已自动还原",
+      "pinned_source": "应当提示用户已自动还原",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:restores_backup_when_source_disappeared+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "09b8d7ff52df1f40",
+      "source": "同步临时文件失败: {0}",
+      "pinned_source": "同步临时文件失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:save_history_inner+macro:format | fn:save_logs+macro:format | fn:write_storage+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "11c3750b221dac79",
+      "source": "社交软件",
+      "pinned_source": "社交软件",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "14f6c3cbbf43fd2e",
+      "source": "进程占用警告",
+      "pinned_source": "进程占用警告",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "24aed6acf4d13656",
+      "source": "该目录此前已经迁移过（当前指向 {0}），不能重复迁移。\n\n",
+      "pinned_source": "该目录此前已经迁移过（当前指向 {0}），不能重复迁移。\n\n",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:formatMigrationFailureMessage",
+      "placeholders": {
+        "0": "existingTarget"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "2886144b281d4ee6",
+      "source": "<1/>该目录下的联接都已有迁移记录，无需重复恢复",
+      "pinned_source": "<1/>该目录下的联接都已有迁移记录，无需重复恢复",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:LinkRecoveryModal+tag:div",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "2a9a0943ded5cec4",
+      "source": "无法把残留目录移入回收站：{0}\n\n目录：{1}\n原因：{2}\n\n可手动删除该目录后重试，或在设置中关闭「删除文件移入回收站」以允许直接删除。",
+      "pinned_source": "无法把残留目录移入回收站：{0}\n\n目录：{1}\n原因：{2}\n\n可手动删除该目录后重试，或在设置中关闭「删除文件移入回收站」以允许直接删除。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "2b78c5b417338538",
+      "source": "迁移中",
+      "pinned_source": "迁移中",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:FolderRow | component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "31e0537932d73f09",
+      "source": "正在取消迁移...",
+      "pinned_source": "正在{P1}迁移...",
+      "pins": {
+        "P1": "4d0b4688c787cf6c"
+      },
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleCancelMigration",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "3269e830795b1200",
+      "source": "文件完整性校验失败。预期: {0} 字节，实际: {1} 字节，跳过: {2} 字节",
+      "pinned_source": "文件完整性校验失败。预期: {0} 字节，实际: {1} 字节，跳过: {2} 字节",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "3a5a55d0b30510b0",
+      "source": "企业微信文件",
+      "pinned_source": "企业微信文件",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:special_path_candidates",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "3c8a131b7fd8b748",
+      "source": "目标位置已存在同名目录：\n{0}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。请确认该目录可覆盖后再重试。",
+      "pinned_source": "目标位置已存在同名目录：\n{0}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。请确认该目录可覆盖后再重试。",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:formatMigrationFailureMessage",
+      "placeholders": {
+        "0": "targetConflict.existingPath"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "4c900b779804d940",
+      "source": "目标目录为空，没有可恢复的数据",
+      "pinned_source": "目标目录为空，没有可恢复的数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:validate_import_entry",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "503176ef31e45fe4",
+      "source": "正在检测文件占用...",
+      "pinned_source": "正在检测文件占用...",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:migrate_app",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "544624ab7c76663e",
+      "source": "{0} 卸载流程已结束。\n\n是否现在开始残留扫描？（建议在卸载向导完全关闭后执行）",
+      "pinned_source": "{0} 卸载流程已结束。\n\n是否现在开始残留扫描？（建议在卸载向导完全关闭后执行）",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:confirmScan",
+      "placeholders": {
+        "0": "app.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "606aec89557870ba",
+      "source": "SOURCE_IS_LINK:{0}\n\n路径 {1} 已经是指向 {2} 的目录链接，说明它此前已经迁移过。\n\n再次迁移会把目标盘的数据重复复制一份到新位置，旧副本仍留在原处占用空间。\n如需改变位置，请先在「迁移记录」中还原该项目，然后再重新迁移。",
+      "pinned_source": "SOURCE_IS_LINK:{0}\n\n路径 {1} 已经是指向 {2} 的目录链接，说明它此前已经迁移过。\n\n再次迁移会把目标盘的数据重复复制一份到新位置，旧副本仍留在原处占用空间。\n如需改变位置，请先在「迁移记录」中还原该项目，然后再重新迁移。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:into_message+macro:format",
+      "placeholders": {
+        "0": "{existing_target}",
+        "1": "{source}",
+        "2": "{existing_target}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "607fd1c35369c711",
+      "source": "清理残留记录（数据已丢失，无法恢复）",
+      "pinned_source": "清理残留记录（数据已丢失，无法恢复）",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "6271be8e1eddd04f",
+      "source": "可随时恢复，操作可逆",
+      "pinned_source": "可随时恢复，操作可逆",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "65329dda56b8651b",
+      "source": "目标目录为空，没有可恢复的数据：{0}\n\n未创建原目录，请先确认该文件夹是否已被卸载或手动清理。",
+      "pinned_source": "目标目录为空，没有可恢复的数据：{0}\n\n未创建原目录，请先确认该文件夹是否已被卸载或手动清理。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_large_folder+macro:format | fn:restore_large_folder_by_history+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "6653dfdd4091e619",
+      "source": "腾讯系应用数据目录（QQ、企业微信等）含高频写入的 SQLite 数据库，迁移前需完全退出相关程序（系统托盘右键退出）。建议优先使用应用自带的文件管理路径设置。",
+      "pinned_source": "腾讯系应用数据目录（QQ、企业微信等）含高频写入的 SQLite 数据库，迁移前需完全退出相关程序（系统托盘右键退出）。建议优先使用应用自带的文件管理路径设置。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "670a768567f974c1",
+      "source": "<1/>清理",
+      "pinned_source": "<1/>清理",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:HistoryRow+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "68938d70626b71c1",
+      "source": "目标路径缺少父目录: {0}",
+      "pinned_source": "目标路径缺少父目录: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:remigrate_ghost_link+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "6ab8c4f7901a804d",
+      "source": "文件完整性校验通过，当前程序安全",
+      "pinned_source": "文件完整性校验通过，当前程序安全",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:verify_file_integrity",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "6c40593301507f4b",
+      "source": "JetBrains IDE 目录",
+      "pinned_source": "JetBrains IDE 目录",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:label | fn:check_dangerous_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "702d0f056f7a4319",
+      "source": "临时备份目录清理失败（文件被占用），已安排在下次重启时自动删除。\n残留目录：{0}。",
+      "pinned_source": "临时备份目录清理失败（文件被占用），已安排在下次重启时自动删除。\n残留目录：{0}。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "71ab220053424f78",
+      "source": "残留扫描失败: {0}",
+      "pinned_source": "残留扫描失败: {0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleScanResidue",
+      "placeholders": {
+        "0": "error"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "71c368b27ae36703",
+      "source": "建议运行残留扫描彻底清理。",
+      "pinned_source": "建议运行残留扫描彻底清理。",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:force_remove_application+macro:format",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "71d180a1240369b4",
+      "source": "便携版数据目录，随程序目录携带",
+      "pinned_source": "便携版数据目录，随程序目录携带",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7293a05768248a1b",
+      "source": "未知安装目录",
+      "pinned_source": "未知安装目录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:UninstallReportModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "74b37fc356d2ca25",
+      "source": "残留扫描线程异常: {0}",
+      "pinned_source": "残留扫描线程异常: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:scan_app_residue+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7673c3b539d52598",
+      "source": "应用已卸载，没有可恢复的数据",
+      "pinned_source": "应用已卸载，没有可恢复的数据",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "77f73d429cd188f5",
+      "source": "残留扫描根目录不应被挡住: {0}",
+      "pinned_source": "残留扫描根目录不应被挡住: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:scan_roots_allow_data_and_program_directories+macro:assert",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "79b2f11588cd2d0d",
+      "source": "再次迁移会把数据重复复制一份，旧副本仍留在原处占用空间。",
+      "pinned_source": "再次迁移会把数据重复复制一份，旧副本仍留在原处占用空间。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:formatMigrationFailureMessage",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7a92e492724591c7",
+      "source": "正在取消迁移，请稍候...",
+      "pinned_source": "正在{P1}迁移，请稍候...",
+      "pins": {
+        "P1": "4d0b4688c787cf6c"
+      },
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleCancelMigration",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7bc57de3bed7880c",
+      "source": "建议按照“软件颗粒度”迁移明确的数据目录，例如单独迁移微信、浏览器缓存或开发工具缓存，并先退出相关软件。 带许可证校验、系统服务、内核驱动、反作弊组件或强路径校验的软件，可能把路径写入服务、注册表、授权文件或驱动配置， 也可能在更新/自修复时删除目录链接；这类软件即使目录复制成功，也不适合使用软链接或 Junction 重定向。",
+      "pinned_source": "建议按照“软件颗粒度”迁移明确的数据目录，例如单独迁移微信、浏览器缓存或开发工具缓存，并先退出相关软件。 带许可证校验、系统服务、内核驱动、反作弊组件或强路径校验的软件，可能把路径写入服务、注册表、授权文件或驱动配置， 也可能在更新/自修复时删除目录链接；这类软件即使目录复制成功，也不适合使用软链接或 Junction 重定向。",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7c67482ff119e1a7",
+      "source": "官网",
+      "pinned_source": "官网",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7d3ca150af742308",
+      "source": "迁移前检测文件占用",
+      "pinned_source": "迁移前检测文件占用",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:Settings+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "7d5f1fc123cc5ad5",
+      "source": "自动恢复未完成。原数据备份仍保留在：{0}；恢复原因：{1}",
+      "pinned_source": "自动恢复未完成。原数据备份仍保留在：{0}；恢复原因：{1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "8190dc32bf3835dd",
+      "source": "卸载期间新出现（可作残留线索，归属需人工确认）：",
+      "pinned_source": "卸载期间新出现（可作残留线索，归属需人工确认）：",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UninstallReportModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "87e91624f1789429",
+      "source": "隐藏不可迁移的系统应用",
+      "pinned_source": "隐藏不可迁移的系统应用",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:AppList",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "88b94707f6d2da02",
+      "source": "合法联接应产出候选",
+      "pinned_source": "合法联接应产出候选",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:junction_is_excluded_inside_profile_and_reported_outside",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "892e00c4f1e1b957",
+      "source": "目标目录不存在（悬空联接），没有可恢复的数据",
+      "pinned_source": "目标目录不存在（悬空联接），没有可恢复的数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:build_candidate",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "90295e9bd191ec71",
+      "source": "安全校验未通过：目录名 '{0}' 与应用名 '{1}' 无匹配关系，拒绝删除以防误删无关应用。",
+      "pinned_source": "安全校验未通过：目录名 '{0}' 与应用名 '{1}' 无匹配关系，拒绝删除以防误删无关应用。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:validate_deletion_target+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "910f34309c8ab817",
+      "source": "正在检测文件占用 {0}/{1}",
+      "pinned_source": "正在检测文件占用 {0}/{1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:check_file_locks+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "9579a0f4d67c223b",
+      "source": "Steam 游戏库迁移后，Steam 客户端无法自动识别新路径下的游戏，需在 Steam 设置的「下载」→「Steam 库文件夹」中手动添加新路径并重新扫描游戏。游戏数据本身不会丢失。",
+      "pinned_source": "Steam 游戏库迁移后，Steam 客户端无法自动识别新路径下的游戏，需在 Steam 设置的「下载」→「Steam 库文件夹」中手动添加新路径并重新扫描游戏。游戏数据本身不会丢失。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "9d87812dac9f5e7e",
+      "source": "<1/>前往",
+      "pinned_source": "<1/>前往",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:Settings+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "9dbccb05105267f4",
+      "source": "总占用",
+      "pinned_source": "总占用",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:AppList+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "9fb32eb4875c4110",
+      "source": "Windows 自带卸载仅运行卸载程序，<1>不进行残留扫描</1>",
+      "pinned_source": "Windows 自带卸载仅运行卸载程序，<1>不进行残留扫描</1>",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:li",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "a39a2ca29824abcd",
+      "source": "{0} 的原路径 {1} 是普通目录（非 Junction），已保留该目录并清理无效记录，请手动确认。\n提示：若需重新迁移到 {2}，应用已支持覆盖残留目录",
+      "pinned_source": "{0} 的原路径 {1} 是普通目录（非 Junction），已保留该目录并清理无效记录，请手动确认。\n提示：若需重新迁移到 {2}，应用已支持覆盖残留目录",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:clean_ghost_links+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "a5a007b242fe9965",
+      "source": "WebView2 是 Viap 的运行依赖，迁移后 Viap 自身将无法启动。",
+      "pinned_source": "WebView2 是 Viap 的运行依赖，迁移后 Viap 自身将无法启动。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "a69beccdedab9b16",
+      "source": "数据已切换到新目录，但旧目录中的残留数据未能删除：{0}",
+      "pinned_source": "数据已切换到新目录，但旧目录中的残留数据未能删除：{0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:set_data_dir+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "a868e5e9cbfa8ce5",
+      "source": "残留清理另删除 {0}（位于安装目录内的部分已计入差值）",
+      "pinned_source": "残留清理另删除 {0}（位于安装目录内的部分已计入差值）",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UninstallReportModal+tag:p",
+      "placeholders": {
+        "0": "formatBytes(data.cleanupFreedBytes)"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ac9315ea705e2261",
+      "source": "用户取消了迁移（目标路径已存在残留目录）",
+      "pinned_source": "{P1}（目标路径已存在残留目录）",
+      "pins": {
+        "P1": "3936f6a6e6949adb"
+      },
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:startCopyPhase",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "af61976d74266719",
+      "source": "核心优势：多数普通应用无需重新安装即可继续使用；对含系统服务、驱动、商店包或强路径校验的软件， Viap 会尽量拦截或提示风险。",
+      "pinned_source": "核心优势：多数普通应用无需重新安装即可继续使用；对含系统服务、驱动、商店包或强路径校验的软件， Viap 会尽量拦截或提示风险。",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "af724e60879d56fb",
+      "source": "删除后不可恢复",
+      "pinned_source": "删除后不可恢复",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:CleanupModal+attr:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "b1d0d0e0381f14f7",
+      "source": "<1>迁移前：</1>检测是否有程序正在占用文件夹，防止迁移过程中文件被修改",
+      "pinned_source": "<1>迁移前：</1>检测是否有程序正在占用文件夹，防止迁移过程中文件被修改",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:li",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "b5f7cd74d59542ae",
+      "source": "{0} 的目标位置已存在同名目录：\n{1}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。\n覆盖将删除该目录后重新迁移，是否继续？",
+      "pinned_source": "{0} 的目标位置已存在同名目录：\n{1}\n\n该目录可能是上次迁移未完成留下的残留，也可能是手动创建的数据。\n覆盖将删除该目录后重新迁移，是否继续？",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:promptMsg",
+      "placeholders": {
+        "0": "app.display_name",
+        "1": "targetConflict.existingPath"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "b80b04d549cc6561",
+      "source": "尝试调整筛选条件或搜索关键词",
+      "pinned_source": "尝试调整筛选条件或搜索关键词",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:AppList+attr:description | component:MigrationHistory+attr:description",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "b984e96432ab2884",
+      "source": "即将迁移 <1>{0}</1>。",
+      "pinned_source": "即将迁移 <1>{0}</1>。",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:RiskConfirmModal+tag:p",
+      "placeholders": {
+        "0": "folder.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "bbfddbd540681b29",
+      "source": "将原始文件夹中的所有文件完整复制到用户选择的目标位置",
+      "pinned_source": "将原始文件夹中的所有文件完整复制到用户选择的目标位置",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "be8da62ea113e71a",
+      "source": "图片",
+      "pinned_source": "图片",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:get_large_folders+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c1983c6d12b70de5",
+      "source": "企业微信",
+      "pinned_source": "企业微信",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c26415c9018c51b6",
+      "source": "<1>建议：</1>迁移重要数据前，建议先手动备份。虽然 Viap 设计了完整的安全机制， 但任何涉及文件操作的软件都无法完全排除意外情况（如突然断电、磁盘故障）。",
+      "pinned_source": "<1>建议：</1>迁移重要数据前，建议先手动备份。虽然 Viap 设计了完整的安全机制， 但任何涉及文件操作的软件都无法完全排除意外情况（如突然断电、磁盘故障）。",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:DocP",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c27522dff73428ff",
+      "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+      "pinned_source": "{P1}，请关闭后重试：\n{0}\n\n恢复前必须关闭相关程序，否则文件移动可能失败并导致数据损坏。",
+      "pins": {
+        "P1": "b4af90d71ac41eb3"
+      },
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_large_folder_by_history+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c2f53e0b5dd09244",
+      "source": "目标目录不存在，没有可恢复的数据",
+      "pinned_source": "目标目录不存在，没有可恢复的数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:validate_import_entry",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c410995d7c7b262d",
+      "source": "<1>安全机制：</1>所有残留删除操作均有 4 层安全校验， 确保不会误删系统文件或其他应用的数据。删除的文件可选择放入回收站， 提供额外的安全保障。",
+      "pinned_source": "<1>安全机制：</1>所有残留删除操作均有 4 层安全校验， 确保不会误删系统文件或其他应用的数据。删除的文件可选择放入回收站， 提供额外的安全保障。",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:DocP",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c46bf9fe503ec0fe",
+      "source": "有程序占用该目录，已跳过",
+      "pinned_source": "有程序占用该目录，已跳过",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c6517f67ab005149",
+      "source": "请至少选择一项残留再进行清理",
+      "pinned_source": "请至少选择一项残留再进行清理",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleConfirmCleanup",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c65c574bc8c32c5c",
+      "source": "恢复完整性校验失败：预期 {0}，实际 {1}。\n{2}",
+      "pinned_source": "恢复完整性校验失败：预期 {0}，实际 {1}。\n{2}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_directory_with_progress+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c76cc275d44c81fb",
+      "source": "手动确认残留扫描",
+      "pinned_source": "手动确认残留扫描",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c7ce14b39aeff5fe",
+      "source": "完整性校验线程异常，请稍后重试: {0}",
+      "pinned_source": "完整性校验线程异常，请稍后重试: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:verify_file_integrity+macro:format",
+      "placeholders": {
+        "0": "{error}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c8003b659cf9f8d2",
+      "source": "迁移系统文件夹 <1>{0}</1> 可能导致：",
+      "pinned_source": "迁移系统文件夹 <1>{0}</1> 可能导致：",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:RiskConfirmModal+tag:p",
+      "placeholders": {
+        "0": "folder.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "c8da56ab8e64912f",
+      "source": "{0} 未检测到残留",
+      "pinned_source": "{0} 未检测到残留",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleScanResidue",
+      "placeholders": {
+        "0": "app.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ccee08da3ba22d00",
+      "source": "残留扫描",
+      "pinned_source": "残留扫描",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:CleanupModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d1dc1fb0fe1eed6b",
+      "source": "检查进程占用",
+      "pinned_source": "检查进程占用",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:checking",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d1f29f51712240fe",
+      "source": "已迁移",
+      "pinned_source": "已迁移",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d3556af8e1b7b39d",
+      "source": "显示所有应用（含不可迁移项）",
+      "pinned_source": "显示所有应用（含不可迁移项）",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:AppList",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d494d94f67045ceb",
+      "source": "残留清理",
+      "pinned_source": "残留清理",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:CleanupModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d560bff19cebc19f",
+      "source": "无法删除残留目录: {0}。请手动删除后重试。原因: {1}",
+      "pinned_source": "无法删除残留目录: {0}。请手动删除后重试。原因: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d727f71a8a1b9e63",
+      "source": "应用已卸载，没有可恢复的数据，清理记录",
+      "pinned_source": "应用已卸载，没有可恢复的数据，清理记录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "d9f607a20068aa41",
+      "source": "读取失败",
+      "pinned_source": "读取失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:removes_only_the_requested_record_from_the_backup",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "de5fd055d6d14049",
+      "source": "迁移线程异常: {0}",
+      "pinned_source": "迁移线程异常: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_large_folder+macro:format | fn:migrate_app+macro:format | fn:migrate_special_folder+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "dedac919e562d481",
+      "source": "RECORD_CLEANED_NO_DATA:{0}\n\n{1}\n\n未创建原安装目录，迁移记录已更新为已清理。",
+      "pinned_source": "RECORD_CLEANED_NO_DATA:{0}\n\n{1}\n\n未创建原安装目录，迁移记录已更新为已清理。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:mark_record_without_recoverable_data+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "deef6a7482fae30f",
+      "source": "未发现无效记录",
+      "pinned_source": "未发现无效记录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handlePreviewGhostLinks | component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "df028322290424f1",
+      "source": "注册表已清理",
+      "pinned_source": "注册表已清理",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:force_remove_application+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "df4672d069899e12",
+      "source": "系统保留目录",
+      "pinned_source": "系统保留目录",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:label | fn:check_structural_block",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "df8a0c15f61fd1ba",
+      "source": "无法解析目录链接目标：{0}，原因：{1}",
+      "pinned_source": "无法解析目录链接目标：{0}，原因：{1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:verify_directory_link+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "dfd3535d38dd7c30",
+      "source": "已开启自动备份",
+      "pinned_source": "已开启自动备份",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleToggleAutoBackup",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "dfe9ba73cf0bca68",
+      "source": "导入文件不存在",
+      "pinned_source": "导入文件不存在",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:import_history",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "dff2ab49fbcb7fc8",
+      "source": "<1/>自定义目录",
+      "pinned_source": "<1/>自定义目录",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:TargetPickerDialog+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e02523b07c2f57cb",
+      "source": "重启后自动删除：{0} 项",
+      "pinned_source": "重启后自动删除：{0} 项",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:buildReportText",
+      "placeholders": {
+        "0": "data.scheduledForReboot.length"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e0759e4d78eaf447",
+      "source": "未知位置",
+      "pinned_source": "未知位置",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "fn:formatMigrationFailureMessage | fn:detect_source_conflict",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e09fd59ed5514176",
+      "source": "\n\n如需改变位置，请先在「迁移记录」中还原该项目，再重新迁移。",
+      "pinned_source": "\n\n如需改变位置，请先在「迁移记录」中还原该项目，再重新迁移。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:formatMigrationFailureMessage",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e0dd642963eeede5",
+      "source": "上次安排的重启删除已完成",
+      "pinned_source": "上次安排的重启删除已完成",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:verification_splits_removed_and_still_present+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "e0f755ed650f1adf",
+      "source": "，{0} 条已存在未重复写入",
+      "pinned_source": "，{0} 条已存在未重复写入",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "key:text",
+      "placeholders": {
+        "0": "result.duplicated"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e0f88c2982a7e9f6",
+      "source": "已是最新版本",
+      "pinned_source": "已是最新版本",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e1022c4cd87979c4",
+      "source": "无法定位当前程序文件: {0}",
+      "pinned_source": "无法定位当前程序文件: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:verify_file_integrity+macro:format",
+      "placeholders": {
+        "0": "{error}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e12bc98f9b6760eb",
+      "source": "链接失效，可重新迁移修复",
+      "pinned_source": "链接失效，可重新迁移修复",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e150e4154f192364",
+      "source": "确认迁移数据目录",
+      "pinned_source": "确认迁移数据目录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e15445c29cfce69d",
+      "source": "{0} 卸载未完成。\n\n{1}\n\n是否转用强制删除？将直接移除安装目录和注册表项。",
+      "pinned_source": "{0} 卸载未完成。\n\n{1}\n\n是否转用强制删除？将直接移除安装目录和注册表项。",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:forceConfirm",
+      "placeholders": {
+        "0": "app.display_name",
+        "1": "errStr"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e16f9ea7b9fc04b9",
+      "source": "未检测到可迁移的文件夹",
+      "pinned_source": "未检测到可迁移的文件夹",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:LargeFolders+attr:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e19ab69d0f172e02",
+      "source": "准备更新服务...",
+      "pinned_source": "准备更新服务...",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e1a8ebafe901adcc",
+      "source": "无法获取 Viap 安装目录",
+      "pinned_source": "无法获取 Viap 安装目录",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:get_viap_install_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e1b4cdfd3aef580a",
+      "source": "正在检测进程占用，检测完成后才会开始复制文件...",
+      "pinned_source": "正在检测进程占用，检测完成后才会开始复制文件...",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:MigrationModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e20bd13beeb489d0",
+      "source": "pip 缓存",
+      "pinned_source": "pip 缓存",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e2e5c0f11400cb6f",
+      "source": "原路径 {0} 是普通目录（不是迁移创建的链接），且目标位置 {1} 已无数据。\n\n数据可能已在原路径恢复完毕（上次恢复部分成功）。\n请检查 {2} 目录内容是否完整，若完整则无需恢复。\n若内容不完整，请手动从备份恢复。",
+      "pinned_source": "原路径 {0} 是普通目录（不是迁移创建的链接），且目标位置 {1} 已无数据。\n\n数据可能已在原路径恢复完毕（上次恢复部分成功）。\n请检查 {2} 目录内容是否完整，若完整则无需恢复。\n若内容不完整，请手动从备份恢复。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e3008e49b7545887",
+      "source": "卡巴斯基含内核级驱动组件，迁移后驱动可能加载失败，需重新安装卡巴斯基恢复防护。",
+      "pinned_source": "卡巴斯基含内核级驱动组件，迁移后驱动可能加载失败，需重新安装卡巴斯基恢复防护。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e350b50ccc412961",
+      "source": "迁移操作涉及文件系统的底层修改。强烈建议在操作前关闭相关应用， 并在迁移重要数据前进行独立备份。",
+      "pinned_source": "迁移操作涉及文件系统的底层修改。强烈建议在操作前关闭相关应用， 并在迁移重要数据前进行独立备份。",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e381a5763d5fbdec",
+      "source": "已复制",
+      "pinned_source": "已复制",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:UninstallReportModal | component:FeedbackModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e384714c2a62ecb1",
+      "source": "删除失败: {0}",
+      "pinned_source": "删除失败: {0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleConfirmDeleteRecord",
+      "placeholders": {
+        "0": "error"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e3cdf8d0d8ff1578",
+      "source": "清理受管数据失败",
+      "pinned_source": "清理受管数据失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:cleanup_removes_only_managed_entries",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "e3d457e2f1880307",
+      "source": "办公软件",
+      "pinned_source": "办公软件",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "type:union | key:category | component:BLOCKED_CATEGORY_TIPS+key:办公软件 | fn:check_dangerous_path | fn:blocked_message",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e466885f561402ed",
+      "source": "选择新的数据存储目录",
+      "pinned_source": "选择新的数据存储目录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e49b58da7abc0dd0",
+      "source": "不能删除目标位置的任何数据",
+      "pinned_source": "不能删除目标位置的任何数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:reports_missing_backup_without_deleting_anything+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "e4f87638ec29de90",
+      "source": "源目录为空，已复制目录结构",
+      "pinned_source": "源目录为空，已复制目录结构",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:copy_dir",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e52b871ed339afb6",
+      "source": "导入失败：{0}",
+      "pinned_source": "导入失败：{0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "key:text",
+      "placeholders": {
+        "0": "String(error)"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e577bd85727934a8",
+      "source": "{0}从备份导入",
+      "pinned_source": "{0}从备份导入",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:LinkRecoveryModal+tag:button",
+      "placeholders": {
+        "0": "mirrorImporting ? <LoaderCircle className=\"w-3.5 h-3.5 animate-spin\" /> : <RefreshCw className=\"w-3.5 h-3.5\" />"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e5a05384563b8ae5",
+      "source": "显示扫描耗时",
+      "pinned_source": "显示扫描耗时",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:Settings+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e609cfa106c2413a",
+      "source": "Claude Code 数据",
+      "pinned_source": "Claude Code 数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e62a1577e2543fe3",
+      "source": "DeepSeek Harness 数据",
+      "pinned_source": "DeepSeek Harness 数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e64b4ea1443a08cc",
+      "source": "默认应用迁移目录",
+      "pinned_source": "默认应用迁移目录",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:Settings+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e6d465c74ee869e4",
+      "source": "Viap 在卸载后自动扫描三大数据目录 + 注册表，彻底清除残留",
+      "pinned_source": "Viap 在卸载后自动扫描三大数据目录 + 注册表，彻底清除残留",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e6dc6ebeb99e6e91",
+      "source": "Codeium / Windsurf 数据",
+      "pinned_source": "Codeium / Windsurf 数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e7076433fd41def9",
+      "source": "\n\n⚠️ 检测到该应用含自动更新组件，更新时会重建安装目录导致链接失效，\n更新后请在迁移历史中对失效记录执行「重新迁移」修复。",
+      "pinned_source": "\n\n⚠️ 检测到该应用含自动更新组件，更新时会重建安装目录导致链接失效，\n更新后请在迁移历史中对失效记录执行「重新迁移」修复。",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:migration_success_message",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e724c95a43caa1a2",
+      "source": "恢复后日志必须清除",
+      "pinned_source": "恢复后日志必须清除",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:restores_backup_when_source_disappeared+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "e74fa59143c35c18",
+      "source": "剪映本地数据",
+      "pinned_source": "剪映本地数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e7ce3d2ff506d447",
+      "source": "Windows 应用商店目录由系统服务管理，迁移后商店应用全部失效。",
+      "pinned_source": "Windows 应用商店目录由系统服务管理，迁移后商店应用全部失效。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e83e61a9957034c4",
+      "source": "<1/>使用默认位置",
+      "pinned_source": "<1/>使用默认位置",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:TargetPickerDialog+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e84fc42e4c4f7230",
+      "source": "原安装目录已不存在，目标目录为空或已被卸载清理。",
+      "pinned_source": "原安装目录已不存在，目标目录为空或已被卸载清理。",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:restore_app",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e852138cd31981c8",
+      "source": "创建目录失败 {0}: {1}",
+      "pinned_source": "创建目录失败 {0}: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:copy_dir+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e8bcad44608f5afe",
+      "source": "WorkBuddy 数据",
+      "pinned_source": "WorkBuddy 数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e8d62f0d018b075f",
+      "source": "读取目录状态失败 {0}: {1}",
+      "pinned_source": "读取目录状态失败 {0}: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:is_empty_directory+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e91eaa8d0e21df21",
+      "source": "Chrome 缓存",
+      "pinned_source": "Chrome 缓存",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e921821c1a24fc61",
+      "source": "正在下载更新",
+      "pinned_source": "正在下载更新",
+      "pins": {},
+      "kinds": [
+        "jsx-text",
+        "string"
+      ],
+      "hint": "component:DownloadProgress+jsx-text | fn:header",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e92419bf72ee6b15",
+      "source": "其他盘{0}",
+      "pinned_source": "其他盘{0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "key:label",
+      "placeholders": {
+        "0": "otherDrives.length > 0 ? ` (${otherDrives.join('/')})` : ''"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e92ae864dbb30891",
+      "source": "  新增 {0} 项（卸载期间出现，需人工确认归属）",
+      "pinned_source": "  新增 {0} 项（卸载期间出现，需人工确认归属）",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:buildReportText",
+      "placeholders": {
+        "0": "appeared.length"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e92dc225606104fb",
+      "source": "写入失败",
+      "pinned_source": "写入失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:removes_only_the_requested_record_from_the_backup",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "e963f1ba0cf7c588",
+      "source": "仍在 {0}",
+      "pinned_source": "仍在 {0}",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UninstallReportModal+tag:span",
+      "placeholders": {
+        "0": "diff.remaining.length"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e96fc830459be6c7",
+      "source": "GPU 驱动路径写死进系统服务注册表，迁移后驱动无法加载，轻则降级到基本显示模式，重则蓝屏。",
+      "pinned_source": "GPU 驱动路径写死进系统服务注册表，迁移后驱动无法加载，轻则降级到基本显示模式，重则蓝屏。",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:'GPU驱动' | fn:blocked_message",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "e9aa64b3a50c2bf4",
+      "source": "创建临时文件失败: {0}",
+      "pinned_source": "创建临时文件失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:save_history_inner+macro:format | fn:save_logs+macro:format | fn:write_storage+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ea067a657ccba7e6",
+      "source": "导入选中 ({0})",
+      "pinned_source": "导入选中 ({0})",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "component:LinkRecoveryModal",
+      "placeholders": {
+        "0": "selectedCount"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ea51dbe03aef4875",
+      "source": "移动目录失败（错误码 {0}）：{1}\n如目标路径已存在残留目录，请手动删除后重试。",
+      "pinned_source": "移动目录失败（错误码 {0}）：{1}\n如目标路径已存在残留目录，请手动删除后重试。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eaca04bf4c22dc14",
+      "source": "删除空目标目录失败 {0}: {1}",
+      "pinned_source": "删除空目标目录失败 {0}: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:mark_record_without_recoverable_data+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eb2cf6b0cfe25988",
+      "source": "重新迁移线程异常: {0}",
+      "pinned_source": "重新迁移线程异常: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:remigrate_ghost_link+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eb3d8a400ccac591",
+      "source": "💬 QQ交流群",
+      "pinned_source": "💬 QQ交流群",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:FeedbackModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eba9157821b622e1",
+      "source": "NVIDIA 驱动路径写死进系统服务注册表，迁移后显卡驱动失效。",
+      "pinned_source": "NVIDIA 驱动路径写死进系统服务注册表，迁移后显卡驱动失效。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ebb4465fa57b6443",
+      "source": "检测到以下程序正在运行，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+      "pinned_source": "{P1}，请关闭后重试：\n{0}\n\n恢复前必须关闭应用，否则文件移动可能失败并导致数据损坏。",
+      "pins": {
+        "P1": "b4af90d71ac41eb3"
+      },
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_app+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ec00dd13aed7354f",
+      "source": "未设置，迁移时将提示选择目录",
+      "pinned_source": "未设置，迁移时将提示选择目录",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ec494652705d585c",
+      "source": "系统时间应有效",
+      "pinned_source": "系统时间应有效",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:temp_dir | fn:top_level_listing_skips_volatile_directories | fn:snapshot_captures_install_dir_and_diff_detects_removal | fn:deleting_a_missing_registry_key_counts_as_success+macro:format | fn:directory_fingerprint_changes_when_content_changes | fn:contents_removal_handles_directory_links | fn:copy_file_ex_w_supports_paths_longer_than_max_path | fn:copies_tree_and_recreates_nested_directory_links | fn:detects_source_that_is_already_a_link | fn:recursive_copy_preserves_managed_files_without_copying_temp_files | fn:cleanup_removes_only_managed_entries | fn:unrelated_cache_directory_is_not_treated_as_managed | fn:import_rejects_plain_directory | fn:junction_is_excluded_inside_profile_and_reported_outside | fn:removes_only_the_requested_record_from_the_backup | fn:create_fixture | fn:temp_storage",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "ec63214dddcd47c6",
+      "source": "开始复制文件...",
+      "pinned_source": "开始复制文件...",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:copy_dir",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ec9ae854606665c4",
+      "source": "许多应用卸载后会在 AppData 留下数 GB 的配置/缓存文件，Windows 不会提示",
+      "pinned_source": "许多应用卸载后会在 AppData 留下数 GB 的配置/缓存文件，Windows 不会提示",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UserManual+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ecafb23da99758e9",
+      "source": "正在下载 {0}%",
+      "pinned_source": "正在下载 {0}%",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {
+        "0": "downloadProgress"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ecc9a254789b0dec",
+      "source": "<1/>取消迁移",
+      "pinned_source": "<1/>{P1}迁移",
+      "pins": {
+        "P1": "4d0b4688c787cf6c"
+      },
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:MigrationModal+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ece0bd6c36006c3f",
+      "source": "严重损坏（数据已丢失，只能清理）",
+      "pinned_source": "严重损坏（数据已丢失，只能清理）",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ed095784314b8e7c",
+      "source": "搜索名称...",
+      "pinned_source": "搜索名称...",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:MigrationHistory+attr:placeholder",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ed417e28ab972ed8",
+      "source": "迁移设置",
+      "pinned_source": "迁移设置",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:Settings+attr:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ed924526ddab321d",
+      "source": "检测到进程占用",
+      "pinned_source": "检测到进程占用",
+      "pins": {},
+      "kinds": [
+        "string",
+        "jsx-text"
+      ],
+      "hint": "component:MigrationModal | component:MigrationModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eded6bb871331620",
+      "source": "复制文件中",
+      "pinned_source": "复制文件中",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:copying",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ee8a66e0ff485c2d",
+      "source": "  计划任务 {0} 个：{1}",
+      "pinned_source": "  计划任务 {0} 个：{1}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:buildReportText",
+      "placeholders": {
+        "0": "groups.task.length",
+        "1": "groups.task.map(t => t.name).join('、')"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eeb3313e7a1e9955",
+      "source": "保存报告",
+      "pinned_source": "保存报告",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:UninstallReportModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eedae4fdd0bb31f6",
+      "source": "备份目录应当已被改名",
+      "pinned_source": "备份目录应当已被改名",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:restores_backup_when_source_disappeared+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "eeec4a9e67625dc0",
+      "source": "未能提取应用图标，显示首字母占位",
+      "pinned_source": "未能提取应用图标，显示首字母占位",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:AppIconFallback+attr:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "eef111955b1b8f3c",
+      "source": "卸载程序不存在: {0}",
+      "pinned_source": "卸载程序不存在: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:start_uninstall_process+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ef0d81728b31e2fe",
+      "source": "强制删除完成：{0}{1}{2}。{3}{4}",
+      "pinned_source": "强制删除完成：{0}{1}{2}。{3}{4}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:force_remove_application+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}",
+        "3": "{}",
+        "4": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f02e9439542f1e56",
+      "source": "取消选择",
+      "pinned_source": "{P1}选择",
+      "pins": {
+        "P1": "4d0b4688c787cf6c"
+      },
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:CleanupModal | component:LinkRecoveryModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f036bced04eaab08",
+      "source": "目标路径",
+      "pinned_source": "目标路径",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:HistoryRow+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f03d034b25cd1c7f",
+      "source": "无法读取联接目标",
+      "pinned_source": "无法读取联接目标",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:validate_import_entry",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f07963e9889c9087",
+      "source": "创建临时目录失败",
+      "pinned_source": "创建临时目录失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:temp_config_dir",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "f1682db2147945f9",
+      "source": "恢复失败: {0}",
+      "pinned_source": "恢复失败: {0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleRestore",
+      "placeholders": {
+        "0": "error"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f1af0df574be8736",
+      "source": "签名外层 Base64 解码失败: {0}",
+      "pinned_source": "签名外层 Base64 解码失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:decode_signature_content+macro:format",
+      "placeholders": {
+        "0": "{error}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f1e88fdd3d41dff5",
+      "source": "如果 Viap 帮你省下了磁盘空间，欢迎请我喝杯咖啡 ☕️",
+      "pinned_source": "如果 Viap 帮你省下了磁盘空间，欢迎请我喝杯咖啡 ☕️",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:DonateModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f226e41c997152f0",
+      "source": "{0} 的目标路径已存在：\n{1}\n\n是否覆盖？",
+      "pinned_source": "{0} 的目标路径已存在：\n{1}\n\n是否覆盖？",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:promptMsg",
+      "placeholders": {
+        "0": "folder.display_name",
+        "1": "targetConflict.existingPath"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f26c38061b0ba3f7",
+      "source": "目录不存在: {0}",
+      "pinned_source": "目录不存在: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:get_app_size+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f273d14e64af5a99",
+      "source": "Jan 数据",
+      "pinned_source": "Jan 数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f287a6d2c2941f68",
+      "source": "一款轻量级，专注本地文件隐私、安全的工具。支持高强度文件加密，即使电脑被他人访问也无法打开你的私密文件。内置隐私空间功能，文件放入后自动隐藏并加密；支持彻底粉碎敏感文件，粉碎后无法恢复。适合保护重要文档、私人照片和工作资料。",
+      "pinned_source": "一款轻量级，专注本地文件隐私、安全的工具。支持高强度文件加密，即使电脑被他人访问也无法打开你的私密文件。内置隐私空间功能，文件放入后自动隐藏并加密；支持彻底粉碎敏感文件，粉碎后无法恢复。适合保护重要文档、私人照片和工作资料。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:summary",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f2c6b5167b9a7b80",
+      "source": "复制失败",
+      "pinned_source": "复制失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:copies_tree_and_recreates_nested_directory_links",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "f2f55d740112c5ef",
+      "source": "检测中…",
+      "pinned_source": "检测中…",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f31cdfa8edfacef6",
+      "source": "{0} 有进程占用，请处理后选择继续或跳过",
+      "pinned_source": "{0} 有进程占用，请处理后选择继续或跳过",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleBatchMigrate",
+      "placeholders": {
+        "0": "app.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f33600e6a38389a4",
+      "source": "Viap 自身不可迁移",
+      "pinned_source": "Viap 自身不可迁移",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleMigrate",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f3909087cec18444",
+      "source": "{0} 已成功还原",
+      "pinned_source": "{0} 已成功还原",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "fn:handleRestore",
+      "placeholders": {
+        "0": "app.display_name"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f3c1ced22f41a2bf",
+      "source": "标准位置与安装目录均无变化",
+      "pinned_source": "标准位置与安装目录均无变化",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:UninstallReportModal+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f3ea6d345e2ab032",
+      "source": "操作",
+      "pinned_source": "操作",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:AppList+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f4130d56367a0baa",
+      "source": "ChatGPT / Codex 桌面版",
+      "pinned_source": "ChatGPT / Codex 桌面版",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f454787822f7665e",
+      "source": "我了解风险，继续",
+      "pinned_source": "我了解风险，继续",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:RiskConfirmModal",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f47766223f8e0094",
+      "source": "重命名日志文件失败: {0}",
+      "pinned_source": "重命名日志文件失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:save_logs+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f49027a170075a73",
+      "source": "无法获取源文件夹名称",
+      "pinned_source": "无法获取源文件夹名称",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:migrate_app",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f4ba8af09f41fdd9",
+      "source": "请先选择要扫描的文件夹（原路径一侧）",
+      "pinned_source": "请先选择要扫描的文件夹（原路径一侧）",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f4c463e7963229f9",
+      "source": "公钥文本编码无效: {0}",
+      "pinned_source": "公钥文本编码无效: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:load_public_key+macro:format",
+      "placeholders": {
+        "0": "{error}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f4dbbc63a5557f79",
+      "source": "数据库",
+      "pinned_source": "数据库",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "type:union | key:category | fn:check_dangerous_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f51a9e3a0abf47f0",
+      "source": "重建目录链接失败 {0} -> {1}: {2}",
+      "pinned_source": "重建目录链接失败 {0} -> {1}: {2}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:copy_dir+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f5c24af17c17db4f",
+      "source": "已重建 {0} 条迁移记录",
+      "pinned_source": "已重建 {0} 条迁移记录",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "key:text",
+      "placeholders": {
+        "0": "result.imported"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f5dbaf822538f215",
+      "source": "六、数据安全说明",
+      "pinned_source": "六、数据安全说明",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:UserManual+attr:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f606dcbbf7071b22",
+      "source": "LightC × BinlockX — Windows 本地痛点一站式解决方案",
+      "pinned_source": "LightC × BinlockX — Windows 本地痛点一站式解决方案",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:Settings+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f610ac7d93fd796b",
+      "source": "<1/>导入",
+      "pinned_source": "<1/>导入",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:Settings+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f61ed25c0f4cd245",
+      "source": "正在校验恢复完整性...",
+      "pinned_source": "正在校验恢复完整性...",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:restore_directory_with_progress",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f643755428537bed",
+      "source": "校验中",
+      "pinned_source": "校验中",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:AppMigration",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f652aa7bfe31b9ef",
+      "source": "SYMLINK_FAILED_DATA_AT_TARGET:{0}\n创建目录链接失败，自动恢复也未完成。\n\n⚠️ 数据副本仍完整保存在：{1}\n原目录备份仍保留在：{2}\n\n请勿删除上述任一目录，关闭占用程序后再手动恢复。\n\n链接失败原因：{3}\n恢复失败原因：{4}",
+      "pinned_source": "SYMLINK_FAILED_DATA_AT_TARGET:{0}\n创建目录链接失败，自动恢复也未完成。\n\n⚠️ 数据副本仍完整保存在：{1}\n原目录备份仍保留在：{2}\n\n请勿删除上述任一目录，关闭占用程序后再手动恢复。\n\n链接失败原因：{3}\n恢复失败原因：{4}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:migrate_app+macro:format",
+      "placeholders": {
+        "0": "{target}",
+        "1": "{target}",
+        "2": "{backup}",
+        "3": "{symlink_err}",
+        "4": "{restore_err}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f72019c4c3f52eff",
+      "source": "<1>残留扫描：</1>卸载完成后，自动扫描以下位置：<2><3><4>%APPDATA%</4> — 应用的用户配置和数据</4><5><6>%LOCALAPPDATA%</6> — 本地缓存和临时文件</6><7><8>%PROGRAMDATA%</8> — 全局应用数据</8><9>注册表残留项</9></9>",
+      "pinned_source": "<1>残留扫描：</1>卸载完成后，自动扫描以下位置：<2><3><4>%APPDATA%</4> — 应用的用户配置和数据</4><5><6>%LOCALAPPDATA%</6> — 本地缓存和临时文件</6><7><8>%PROGRAMDATA%</8> — 全局应用数据</8><9>注册表残留项</9></9>",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:li",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f77355680eb8a6f5",
+      "source": "路径 A-Z",
+      "pinned_source": "路径 A-Z",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f78d037abccd3e07",
+      "source": "正常",
+      "pinned_source": "正常",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "component:HistoryRow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f79baf417da3da7c",
+      "source": "创建目录链接",
+      "pinned_source": "创建目录链接",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:linking",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f7aff8c819a4d834",
+      "source": "迁移数据已备份",
+      "pinned_source": "迁移数据已备份",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleBackupNow",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f7bf677190894921",
+      "source": "Hyper-V 目录",
+      "pinned_source": "Hyper-V 目录",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:label | fn:check_dangerous_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f7cb05ccfaba7914",
+      "source": "创建外部目录失败",
+      "pinned_source": "创建外部目录失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:contents_removal_handles_directory_links | fn:copies_tree_and_recreates_nested_directory_links",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "f83d1658f43a637d",
+      "source": "卸载命令无效，程序路径非法: {0}",
+      "pinned_source": "卸载命令无效，程序路径非法: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:start_uninstall_process+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f87519fe01c29216",
+      "source": "文件已删除",
+      "pinned_source": "文件已删除",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:force_remove_application+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f87a203396953dbc",
+      "source": "确认强力卸载",
+      "pinned_source": "确认强力卸载",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f89d2d92f92fd827",
+      "source": "目标: {0}",
+      "pinned_source": "目标: {0}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "component:Settings",
+      "placeholders": {
+        "0": "e.target_path"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f8bedc5c10cefab7",
+      "source": "原路径 {0} 不是目录联接，拒绝恢复以保护数据安全。",
+      "pinned_source": "原路径 {0} 不是目录联接，拒绝恢复以保护数据安全。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_large_folder_by_history+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f8dba5293c1cd787",
+      "source": "{0} 个磁盘",
+      "pinned_source": "{0} 个磁盘",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:DiskUsageBar+tag:span",
+      "placeholders": {
+        "0": "disks?.length ?? 0"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f8e45ce503d6a6e4",
+      "source": "WinSxS（Windows 并行组件库）含整个 Windows 组件的硬链接映射，迁移会导致系统更新和组件激活彻底失效。",
+      "pinned_source": "WinSxS（Windows 并行组件库）含整个 Windows 组件的硬链接映射，迁移会导致系统更新和组件激活彻底失效。",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:reason",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f93d4b9eb6671dbe",
+      "source": "打开注册表路径失败 {0}: {1}",
+      "pinned_source": "打开注册表路径失败 {0}: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:scan_registry_path+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f93eb09108b3c9eb",
+      "source": "<1>Steam 等游戏平台库：</1>游戏库迁移后平台无法自动识别新路径，需在平台设置中手动添加新路径并重新扫描。",
+      "pinned_source": "<1>Steam 等游戏平台库：</1>游戏库迁移后平台无法自动识别新路径，需在平台设置中手动添加新路径并重新扫描。",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UserManual+tag:li",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f94f371e07f31727",
+      "source": "<1/>卸载前占用",
+      "pinned_source": "<1/>卸载前占用",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:UninstallReportModal+tag:p",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f9697cd768d2d3fc",
+      "source": "<1/>{0} 文件夹",
+      "pinned_source": "<1/>{0} 文件夹",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:Settings+tag:span",
+      "placeholders": {
+        "0": "stats.folder_migrations"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f9c354783d564bf8",
+      "source": "复制文件失败 {0}: {1}",
+      "pinned_source": "复制文件失败 {0}: {1}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:copy_file_with_cancel+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "f9ea62bf371ae4b0",
+      "source": "写入缓存失败",
+      "pinned_source": "写入缓存失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:cleanup_removes_only_managed_entries",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "fa197bf8c0a8557c",
+      "source": "写入目标测试文件失败",
+      "pinned_source": "写入目标测试文件失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:recursive_copy_preserves_managed_files_without_copying_temp_files",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "fa4e33b698532341",
+      "source": "视频",
+      "pinned_source": "视频",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:get_large_folders+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fa6968d9f0700e3b",
+      "source": "全部类型",
+      "pinned_source": "全部类型",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fadc54c2c84388c1",
+      "source": "切换已完成时不需要提示",
+      "pinned_source": "切换已完成时不需要提示",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:keeps_everything_when_source_still_exists+macro:assert",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "fb142e6d2586f759",
+      "source": "，自定义文件夹 +{0}，兜底元数据 +{1}",
+      "pinned_source": "，自定义文件夹 +{0}，兜底元数据 +{1}",
+      "pins": {},
+      "kinds": [
+        "template"
+      ],
+      "hint": "key:text",
+      "placeholders": {
+        "0": "result.custom_folders_added",
+        "1": "result.migrated_apps_added"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fb37831fe2b6b459",
+      "source": "上次迁移被中断，已自动把「{0}」还原回 {1}。\n目标位置可能残留一份未完成的副本：{2}，确认数据无误后可手动清理。",
+      "pinned_source": "上次迁移被中断，已自动把「{0}」还原回 {1}。\n目标位置可能残留一份未完成的副本：{2}，确认数据无误后可手动清理。",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:recover_interrupted_migration_at+macro:format",
+      "placeholders": {
+        "0": "{}",
+        "1": "{}",
+        "2": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fbcfb48baa91f0e3",
+      "source": "清理测试失败",
+      "pinned_source": "清理测试失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:unrelated_cache_directory_is_not_treated_as_managed",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "fc035e5e5a6512af",
+      "source": "NuGet 包缓存",
+      "pinned_source": "NuGet 包缓存",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fc93ba9598334182",
+      "source": "<1/>检测到 {0} 项系统痕迹（需手动处理）",
+      "pinned_source": "<1/>检测到 {0} 项系统痕迹（需手动处理）",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:CleanupModal+tag:p",
+      "placeholders": {
+        "0": "systemTraces.length"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fcad845cb99e3884",
+      "source": "我已了解风险，继续迁移",
+      "pinned_source": "我已了解风险，继续迁移",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:WarningConfirmDialog+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fd20702c73d1ea92",
+      "source": "大小",
+      "pinned_source": "大小",
+      "pins": {},
+      "kinds": [
+        "jsx-text",
+        "jsx-attr"
+      ],
+      "hint": "component:HistoryRow+jsx-text | component:MigrationHistory+attr:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fd339273c9505d19",
+      "source": "Cursor 用户数据",
+      "pinned_source": "Cursor 用户数据",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fd7909ecc048658c",
+      "source": "原路径仍是有效的目录链接，无需重新迁移。",
+      "pinned_source": "原路径仍是有效的目录链接，无需重新迁移。",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:remigrate_ghost_link",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fdb80fb0695ad40a",
+      "source": "NVIDIA 驱动安装目录",
+      "pinned_source": "NVIDIA 驱动安装目录",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:label | fn:check_dangerous_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fdd24e72588b12b0",
+      "source": "VSCode 安装目录",
+      "pinned_source": "VSCode 安装目录",
+      "pins": {},
+      "kinds": [
+        "string",
+        "rust-str"
+      ],
+      "hint": "key:label | fn:check_dangerous_path",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fdee90b35b402217",
+      "source": "缺少安装路径参数",
+      "pinned_source": "缺少安装路径参数",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:preview_force_remove",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fe0117c57e5325d7",
+      "source": "体积未知（尚未扫描大小）",
+      "pinned_source": "体积未知（尚未扫描大小）",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:buildBatchConfirmMessage",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fe24bfa43370863f",
+      "source": "VS Code 扩展",
+      "pinned_source": "VS Code 扩展",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:default_app_data_templates+macro:vec",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fe440984fa76f831",
+      "source": "删除目录失败",
+      "pinned_source": "删除目录失败",
+      "pins": {},
+      "kinds": [
+        "rust-str"
+      ],
+      "hint": "fn:directory_fingerprint_changes_when_content_changes",
+      "placeholders": {},
+      "in_test": true,
+      "is_fragment": false
+    },
+    {
+      "id": "fe9430a8717c1385",
+      "source": "扫描并清理目标丢失、链接断裂或已消失的无效记录。先预览，再确认清理。",
+      "pinned_source": "扫描并清理目标丢失、链接断裂或已消失的无效记录。先预览，再确认清理。",
+      "pins": {},
+      "kinds": [
+        "jsx-text"
+      ],
+      "hint": "component:Settings+jsx-text",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fe9d19014afb529d",
+      "source": "启动卸载失败",
+      "pinned_source": "启动卸载失败",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "fn:handleUninstall",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "fed94f38a747193b",
+      "source": "恢复已完成，但目标副本清理失败：{0}",
+      "pinned_source": "恢复已完成，但目标副本清理失败：{0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:restore_directory_with_progress+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ff08d13e6ae69aa0",
+      "source": "适中",
+      "pinned_source": "适中",
+      "pins": {},
+      "kinds": [
+        "string"
+      ],
+      "hint": "key:label",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ff11cb32059903fd",
+      "source": "<1/>扫描恢复迁移记录",
+      "pinned_source": "<1/>扫描恢复迁移记录",
+      "pins": {},
+      "kinds": [
+        "jsx-group"
+      ],
+      "hint": "component:MigrationHistory+tag:button",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ff35d456fd9024bc",
+      "source": "等待卸载程序结束失败: {0}",
+      "pinned_source": "等待卸载程序结束失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:spawn_and_wait+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ff589c9e60a174b2",
+      "source": "只列出本机确实存在的目录：没安装的应用、或数据不在已知位置的应用不会显示；想迁移其它位置可以添加到「自定义文件夹」",
+      "pinned_source": "只列出本机确实存在的目录：没安装的应用、或数据不在已知位置的应用不会显示；想迁移其它位置可以添加到「自定义文件夹」",
+      "pins": {},
+      "kinds": [
+        "jsx-attr"
+      ],
+      "hint": "component:LargeFolders+attr:title",
+      "placeholders": {},
+      "in_test": false,
+      "is_fragment": false
+    },
+    {
+      "id": "ff83d7ded5c2f422",
+      "source": "序列化元数据失败: {0}",
+      "pinned_source": "序列化元数据失败: {0}",
+      "pins": {},
+      "kinds": [
+        "rust-format"
+      ],
+      "hint": "fn:save_all+macro:format",
+      "placeholders": {
+        "0": "{}"
+      },
+      "in_test": false,
+      "is_fragment": false
+    }
+  ]
+}

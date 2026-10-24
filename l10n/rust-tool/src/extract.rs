@@ -308,10 +308,34 @@ impl<'a> Extractor<'a> {
     fn walk_tokens(&mut self, tts: &TokenStream, allow_format_position: bool) -> usize {
         let mut cjk_literals = 0usize;
         let mut format_taken = false;
-        for tt in tts.clone().into_iter() {
-            match tt {
+        // Token-level attributes are skipped — including doc comments, which
+        // proc-macro2 renders as `#[doc = "…"]` inside macro bodies (SPEC
+        // §5.4: comments are never translated).
+        let trees: Vec<TokenTree> = tts.clone().into_iter().collect();
+        let mut i = 0;
+        while i < trees.len() {
+            match &trees[i] {
+                TokenTree::Punct(p) if p.as_char() == '#' => {
+                    let mut j = i + 1;
+                    if j < trees.len() {
+                        if let TokenTree::Punct(b) = &trees[j] {
+                            if b.as_char() == '!' {
+                                j += 1;
+                            }
+                        }
+                    }
+                    if j < trees.len() {
+                        if let TokenTree::Group(g) = &trees[j] {
+                            if g.delimiter() == proc_macro2::Delimiter::Bracket {
+                                i = j + 1;
+                                continue;
+                            }
+                        }
+                    }
+                    i += 1;
+                }
                 TokenTree::Literal(lit) => {
-                    if let Lit::Str(s) = syn::Lit::new(lit) {
+                    if let Lit::Str(s) = syn::Lit::new(lit.clone()) {
                         let is_fmt_pos = allow_format_position && !format_taken;
                         if is_fmt_pos {
                             format_taken = true;
@@ -321,13 +345,13 @@ impl<'a> Extractor<'a> {
                         }
                         self.handle_str_literal(&s, is_fmt_pos);
                     }
-                    // byte strings / chars in token streams are ignored
                 }
                 TokenTree::Group(g) => {
                     cjk_literals += self.walk_tokens(&g.stream(), false);
                 }
                 _ => {}
             }
+            i += 1;
         }
         cjk_literals
     }
