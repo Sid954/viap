@@ -86,6 +86,9 @@ jobs:
       - name: Extract corpus
         run: node l10n/extract.mjs --src upstream --out corpus.json
 
+      - name: Gate - Phase 6 invariant suite
+        run: node l10n/tests/suite.mjs --upstream upstream --corpus corpus.json --pubkey "${{ steps.pubkey.outputs.file }}"
+
       - name: Apply translations + fork patches
         run: |
           node l10n/apply.mjs --src upstream --tm l10n/data

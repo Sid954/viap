@@ -60,9 +60,16 @@ export function validate(source, en, opts = {}) {
   const ratio = en.length / Math.max(source.length, 1);
   if (ratio < 0.4 || ratio > 6) errs.push(`length ratio ${ratio.toFixed(2)} outside 0.4–6`);
 
-  // 7. glossary compliance (case-insensitive, any option)
+  // 7. glossary compliance (case-insensitive, any option). Longest-match
+  // wins: a shorter key fully inside a longer matched key (微信 inside
+  // 企业微信, 校验 inside 完整性校验) must not double-require its own term.
   if (!opts.skipGlossary) {
-    for (const g of glossaryFor(source)) {
+    const matched = glossaryFor(source);
+    for (const g of matched) {
+      const shadowed = matched.some(
+        (h) => h.zh.length > g.zh.length && h.zh.includes(g.zh)
+      );
+      if (shadowed) continue;
       const ok = g.en.some((opt) => en.toLowerCase().includes(opt.toLowerCase()));
       if (!ok) errs.push(`glossary: "${g.zh}" missing (${g.en.join('/')})`);
     }
