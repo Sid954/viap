@@ -23,6 +23,20 @@
     "resolved": true
   },
   {
+    "added_in_phase": 5,
+    "date": "2026-10-24",
+    "item": "actions-blocked",
+    "blocking": true,
+    "detail": "GitHub returns 422 \"Actions has been disabled for this user\" for ALL workflow dispatches on Sid954/viap (repo settings verified enabled=true). This is an account-level block — likely automated flagging or a billing hold. OWNER: open https://github.com/Sid954/viap/actions and follow any banner (appeal/contact link), or https://support.github.com/contact (\"flagged account / Actions disabled\"); also check https://github.com/settings/billing. After re-enable, the Phase 5 dry-run dispatch is ready."
+  },
+  {
+    "added_in_phase": 5,
+    "date": "2026-10-24",
+    "item": "release-secrets",
+    "blocking": false,
+    "detail": "For REAL releases (not dry-run): (1) generate fork updater key: npm run tauri -- signer generate -w \"%USERPROFILE%.tauri\u000biap-en.key\" in .l10n-work/upstream; (2) commit the .pub content as l10n/data/pubkey.txt; (3) gh secret set TAURI_SIGNING_PRIVATE_KEY <keyfile> and gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD. (4) OPTIONAL: gh secret set GH_MODELS_TOKEN (a PAT with Models access) to enable CI auto-translation of future strings."
+  },
+  {
     "added_in_phase": 2,
     "item": "watch-method",
     "file": "src-tauri/src/app_manager/detector.rs",
