@@ -29,7 +29,7 @@ const ENDPOINT =
   get('--endpoint') ?? process.env.L10N_ENDPOINT ?? 'http://127.0.0.1:8080/v1/chat/completions';
 const PENDING = get('--pending') ?? 'data/pending.json';
 const OUT = get('--out') ?? 'data/translations.json';
-const MODEL = get('--model') ?? process.env.L10N_MODEL ?? 'local';
+const MODEL_ARG = get('--model') ?? process.env.L10N_MODEL ?? null;
 const BATCH = Number(get('--batch') ?? 15); // 15 keeps worst-case batches within a 12k ctx
 const LIMIT = Number(get('--limit') ?? 0);
 const NO_GIT = has('--no-git');
@@ -46,27 +46,39 @@ if (items.length === 0) {
 }
 if (LIMIT > 0) items = items.slice(0, LIMIT);
 
-// ─── server reachability ──────────────────────────────────────────────────
-const base = ENDPOINT.replace(/\/chat\/completions$/, '');
-async function checkServer() {
+// ─── server discovery (LlamaApp port varies; probe common candidates) ─────
+const CANDIDATES = [
+  get('--endpoint') ?? process.env.L10N_ENDPOINT,
+  'http://127.0.0.1:8080',
+  'http://127.0.0.1:1234',
+  'http://127.0.0.1:9931',
+  'http://127.0.0.1:52961',
+  'http://127.0.0.1:11434',
+].filter(Boolean);
+let ENDPOINT = null;
+let MODEL = MODEL_ARG;
+for (const base0 of CANDIDATES) {
+  const base = base0.replace(/\/v1\/chat\/completions$/, '').replace(/\/$/, '');
   try {
-    const r = await fetch(`${base}/models`, { signal: AbortSignal.timeout(3000) });
+    const r = await fetch(`${base}/v1/models`, { signal: AbortSignal.timeout(1500) });
+    if (!r.ok) continue;
     const j = await r.json().catch(() => ({}));
-    const ids = (j.data ?? []).map((m) => m.id).join(', ');
-    return ids || 'ok';
+    const ids = (j.data ?? []).map((m) => m.id).filter(Boolean);
+    if (ids.length === 0 && !MODEL_ARG) continue;
+    ENDPOINT = `${base}/v1/chat/completions`;
+    if (!MODEL) MODEL = ids[0];
+    console.log(`model server: ${base} (${MODEL})`);
+    break;
   } catch {
-    return null;
+    /* try next */
   }
 }
-const serverInfo = await checkServer();
-if (!serverInfo) {
-  console.error(`model server not reachable at ${base}`);
-  console.error('Start it first (plan §8.4), e.g.:');
-  console.error('  llama-server.exe -m Qwen3-8B-Q4_K_M.gguf -ngl 99 -c 8192 --port 8080 --jinja');
-  console.error('  (thinking disabled; Vulkan build; or use LM Studio\'s local server)');
+if (!ENDPOINT) {
+  console.error('no model server found on ports: ' + CANDIDATES.join(', '));
+  console.error('Start the Llama app server (Qwen3-8B), or pass --endpoint URL.');
   process.exit(1);
 }
-console.log(`model server: ${serverInfo}`);
+const base = ENDPOINT.replace(/\/chat\/completions$/, '');
 
 // ─── git pull (plan §3.1) ─────────────────────────────────────────────────
 if (!NO_GIT) {
